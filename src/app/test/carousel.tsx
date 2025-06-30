@@ -35,7 +35,7 @@ export default function SimpleCarousel({
     }, autoplayDelay)
     
     return () => clearInterval(timer)
-  }, [images.length, autoplayDelay, currentSlide, onSlideChange, setCurrentSlide])
+  }, [images.length, autoplayDelay, currentSlide])
 
   return (
     <div className={`relative w-full ${height} overflow-hidden ${className}`}>
