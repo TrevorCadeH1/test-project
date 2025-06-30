@@ -1,4 +1,5 @@
 'use client'
+/* eslint-disable @next/next/no-img-element */
 
 import React, { useState, useEffect, useRef, useCallback } from "react"
 import Image from "next/image"
@@ -17,6 +18,21 @@ import { FaYoutube } from "react-icons/fa";
 import { FaTiktok } from "react-icons/fa";
 import { RiFilePaperFill } from "react-icons/ri";
 
+interface ApiItem {
+  id?: number | string
+  item_name?: string
+  txt_wurth_lac_item?: string
+  img?: string
+}
+
+interface Group {
+  itemSkuList?: ApiItem[]
+}
+
+interface ApiResponse {
+  groups?: Group[]
+}
+
 type Product = {
   id: string
   name: string
@@ -25,6 +41,7 @@ type Product = {
   price: string
   unit: string
 }
+
 
 const pricing: Record<string, { price: string; unit: string }> = {
   "1": { price: "$100", unit: "1000 Each" },
@@ -61,28 +78,29 @@ export default function CareersPage() {
                 throw new Error(`API error: ${res.status}`)
             }
 
-            const data = await res.json()
-            const allItems: any[] = Array.isArray(data.groups)
-                ? data.groups.flatMap((group: any) => group.itemSkuList || [])
-                : []
+            const data = (await res.json()) as ApiResponse;
+
+            const allItems: ApiItem[] =
+            data.groups?.flatMap(group => group.itemSkuList ?? []) ?? [];
+
 
             if (allItems.length > 0) {
-                
-                const apiProducts = allItems.slice(0, 9).map((item, idx) => {
-                    const key = (idx + 1).toString()
-                    const { price, unit } = pricing[key] || { price: "$0", unit: "Each" }
+                const apiProducts: Product[] = allItems.slice(0, 9).map((item, idx) => {
+                    const key = (idx + 1).toString();
+                    const { price, unit } = pricing[key] ?? { price: '$0', unit: 'Each' };
 
                     return {
-                        id: item.id?.toString() || `product-${idx}`,
-                        name: item.item_name || `Product ${idx + 1}`, 
-                        manufacturerNumber: item.txt_wurth_lac_item || `MFG-${idx + 1}`,
-                        imageUrl: item.img || '/wswu1.png', 
-                        price,
-                        unit
-                    } as Product
-                })
-                setProducts(apiProducts)
-            } else {
+                    id:       item.id?.toString()               ?? `product-${idx}`,
+                    name:     item.item_name                     ?? `Product ${idx + 1}`,
+                    manufacturerNumber: item.txt_wurth_lac_item  ?? `MFG-${idx + 1}`,
+                    imageUrl: item.img                           ?? '/wswu1.png',
+                    price,
+                    unit,
+                    };
+                });
+
+                setProducts(apiProducts);
+                } else {
                 const fallbackProducts = Array.from({ length: 9 }, (_, idx) => {
                     const key = (idx + 1).toString()
                     const { price, unit } = pricing[key]
@@ -98,6 +116,7 @@ export default function CareersPage() {
                 setProducts(fallbackProducts)
             }
         } catch (error) {
+            console.error(error)
             const fallbackProducts = Array.from({ length: 9 }, (_, idx) => {
                 const key = (idx + 1).toString()
                 const { price, unit } = pricing[key]
@@ -240,7 +259,7 @@ return (
             style={{ scrollBehavior: 'smooth' }}
         >
             {products.length ? (
-            products.map((p, i) => (
+            products.map(p => (
                 <div
                 key={p.id}
                 className="bg-white rounded-xl border border-neutral-200 w-[200px] md:w-[250px] flex-shrink-0 flex flex-col items-center p-3 md:p-4"
@@ -374,7 +393,7 @@ return (
             style={{ scrollBehavior: 'smooth' }}
         >
             {products.length ? (
-            products.map((p, i) => (
+            products.map(p => (
                 <div
                 key={p.id}
                 className="bg-white rounded-xl w-[200px] md:w-[250px] flex-shrink-0 flex flex-col items-center p-3 md:p-4"
@@ -638,7 +657,7 @@ return (
                     height={48}
                     className="ml-2 mr-2 md:mr-4 rounded-md w-8 h-8 md:w-16 md:h-16"
                 />
-                <span className="text-blue-500 text-base md:text-[1.75rem] ml-2 md:ml-4 mt-2 md:mt-4">BUY "YOUR WAY"</span>
+                <span className="text-blue-500 text-base md:text-[1.75rem] ml-2 md:ml-4 mt-2 md:mt-4">BUY &quot;YOUR WAY&quot;</span>
             </div>
             <div className="ml-2 md:ml-4 mt-2 md:mt-4 text-black text-xs md:text-base">
                 Order 24/7 by web, contact our sales reps or<br /> call by phone.
