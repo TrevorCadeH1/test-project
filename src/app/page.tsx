@@ -245,7 +245,7 @@ return (
                 key={p.id}
                 className="bg-white rounded-xl border border-neutral-200 w-[200px] md:w-[250px] flex-shrink-0 flex flex-col items-center p-3 md:p-4"
                 >
-                <img
+                <Image
                     src={p.imageUrl}
                     alt={p.name}
                     className="w-32 md:w-40 h-40 md:h-50 object-contain mb-2"
@@ -377,7 +377,7 @@ return (
                 key={p.id}
                 className="bg-white rounded-xl w-[200px] md:w-[250px] flex-shrink-0 flex flex-col items-center p-3 md:p-4"
                 >
-                <img
+                <Image
                     src={p.imageUrl}
                     alt={p.name}
                     className="w-32 md:w-40 h-40 md:h-50 object-contain mb-2"
@@ -759,32 +759,32 @@ return (
     <div className="flex lg:flex-row md:flex-col sm:flex-col items-start justify-start">
         {/* Logo Section */}
         <div className="flex md:flex-row sm:flex-col flex-wrap md:flex-nowrap items-center md:items-start">
-            <img
+            <Image
                 src="/SAM.png"
                 alt="SAM.gov Photo"
                 className="w-auto h-auto ml-10 lg:ml-10 md:ml-6 sm:ml-4 mb-2 sm:mb-4"
             />
-            <img
+            <Image
                 src="VIKINGCLOUD.png"
                 alt="Viking Cloud Photo"
                 className="w-auto h-auto mt-4 lg:mt-4 md:mt-4 sm:mt-0 ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
             />
-            <img
+            <Image
                 src="FSC.png"
                 alt="FSC Photo"
                 className="w-auto h-auto mt-4 lg:mt-4 md:mt-4 sm:mt-0 ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
             />
-            <img
+            <Image
                 src="CARB2.png"
                 alt="CARB2 Photo"
                 className="w-auto h-auto ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
             />
-            <img
+            <Image
                 src="VENDERFREIGHT.png"
                 alt="VENDER FRIEGHT Photo"
                 className="w-auto h-auto mt-6 lg:mt-6 md:mt-6 sm:mt-0 ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
             />
-            <img
+            <Image
                 src="DIGICERT.png"
                 alt="DIGICERT Photo"
                 className="w-auto h-auto mt-5 lg:mt-5 md:mt-5 sm:mt-0 ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
