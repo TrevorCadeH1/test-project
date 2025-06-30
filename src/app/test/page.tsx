@@ -1,7 +1,7 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
 
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import SimpleCarousel from "./carousel"
@@ -90,10 +90,10 @@ export default function CareersPage() {
                     const { price, unit } = pricing[key] ?? { price: '$0', unit: 'Each' };
 
                     return {
-                    id:       item.id?.toString()               ?? `product-${idx}`,
-                    name:     item.item_name                     ?? `Product ${idx + 1}`,
-                    manufacturerNumber: item.txt_wurth_lac_item  ?? `MFG-${idx + 1}`,
-                    imageUrl: item.img                           ?? '/wswu1.png',
+                    id: item.id?.toString() ?? `product-${idx}`,
+                    name: item.item_name ?? `Product ${idx + 1}`,
+                    manufacturerNumber: item.txt_wurth_lac_item ?? `MFG-${idx + 1}`,
+                    imageUrl: item.img ?? '/wswu1.png',
                     price,
                     unit,
                     };
@@ -705,7 +705,7 @@ return (
                 <span className="text-blue-500 text-base md:text-[1.6rem] ml-2 md:ml-0 mt-2 md:mt-4 text-nowrap">EXPERT SUPPORT TEAM</span>
             </div>
             <div className="ml-2 md:ml-4 mt-2 md:mt-4 text-black text-xs md:text-base">
-                Advice and support from knowledagble<br /> proffesionals.
+                Advice and support from knowledgeable<br /> professionals.
             </div>
         </div>
     </div>
