@@ -17,22 +17,6 @@ import { FaYoutube } from "react-icons/fa";
 import { FaTiktok } from "react-icons/fa";
 import { RiFilePaperFill } from "react-icons/ri";
 
-// Define proper types instead of using 'any'
-type ApiItem = {
-  id?: string | number
-  item_name?: string
-  txt_wurth_lac_item?: string
-  img?: string
-}
-
-type ApiGroup = {
-  itemSkuList?: ApiItem[]
-}
-
-type ApiResponse = {
-  groups?: ApiGroup[]
-}
-
 type Product = {
   id: string
   name: string
@@ -61,17 +45,6 @@ export default function CareersPage() {
   const DiscountScrollRef = useRef<HTMLDivElement>(null)
   const images = ['/web1.avif', '/web2.avif', '/web3.avif', '/web4.avif']
 
-  // Wrap slide change handler in useCallback to prevent unnecessary re-renders
-  const handleSlideChange = useCallback((slide: number) => {
-    // Add any additional logic here if needed
-    console.log('Slide changed to:', slide)
-  }, [])
-
-  // Wrap setCurrentSlide in useCallback to make it stable
-  const handleSetCurrentSlide = useCallback((slide: number) => {
-    setCurrentSlide(slide)
-  }, [])
-
   useEffect(() => {
     async function fetchProducts() {
         try {
@@ -88,20 +61,21 @@ export default function CareersPage() {
                 throw new Error(`API error: ${res.status}`)
             }
 
-            const data: ApiResponse = await res.json()
-            const allItems: ApiItem[] = Array.isArray(data.groups)
-                ? data.groups.flatMap((group: ApiGroup) => group.itemSkuList || [])
+            const data = await res.json()
+            const allItems: any[] = Array.isArray(data.groups)
+                ? data.groups.flatMap((group: any) => group.itemSkuList || [])
                 : []
 
             if (allItems.length > 0) {
-                const apiProducts = allItems.slice(0, 9).map((item, index) => {
-                    const key = (index + 1).toString()
+                
+                const apiProducts = allItems.slice(0, 9).map((item, idx) => {
+                    const key = (idx + 1).toString()
                     const { price, unit } = pricing[key] || { price: "$0", unit: "Each" }
 
                     return {
-                        id: item.id?.toString() || `product-${index}`,
-                        name: item.item_name || `Product ${index + 1}`, 
-                        manufacturerNumber: item.txt_wurth_lac_item || `MFG-${index + 1}`,
+                        id: item.id?.toString() || `product-${idx}`,
+                        name: item.item_name || `Product ${idx + 1}`, 
+                        manufacturerNumber: item.txt_wurth_lac_item || `MFG-${idx + 1}`,
                         imageUrl: item.img || '/wswu1.png', 
                         price,
                         unit
@@ -109,13 +83,13 @@ export default function CareersPage() {
                 })
                 setProducts(apiProducts)
             } else {
-                const fallbackProducts = Array.from({ length: 9 }, (_, index) => {
-                    const key = (index + 1).toString()
+                const fallbackProducts = Array.from({ length: 9 }, (_, idx) => {
+                    const key = (idx + 1).toString()
                     const { price, unit } = pricing[key]
                     return {
-                        id: `fallback-${index + 1}`,
-                        name: `Blum Hardware Product ${index + 1}`,
-                        manufacturerNumber: `BLUM-${index + 1}`,
+                        id: `fallback-${idx + 1}`,
+                        name: `Blum Hardware Product ${idx + 1}`,
+                        manufacturerNumber: `BLUM-${idx + 1}`,
                         imageUrl: '/wswu1.png',
                         price,
                         unit
@@ -123,15 +97,14 @@ export default function CareersPage() {
                 })
                 setProducts(fallbackProducts)
             }
-        } catch (fetchError) {
-            console.error('Failed to fetch products:', fetchError)
-            const fallbackProducts = Array.from({ length: 9 }, (_, index) => {
-                const key = (index + 1).toString()
+        } catch (error) {
+            const fallbackProducts = Array.from({ length: 9 }, (_, idx) => {
+                const key = (idx + 1).toString()
                 const { price, unit } = pricing[key]
                 return {
-                    id: `error-${index + 1}`,
-                    name: `Blum Hardware Product ${index + 1}`,
-                    manufacturerNumber: `BLUM-${index + 1}`,
+                    id: `error-${idx + 1}`,
+                    name: `Blum Hardware Product ${idx + 1}`,
+                    manufacturerNumber: `BLUM-${idx + 1}`,
                     imageUrl: '/wswu1.png',
                     price,
                     unit
@@ -142,7 +115,7 @@ export default function CareersPage() {
     }
 
     fetchProducts()
-  }, []) // Empty dependency array is correct here since fetchProducts doesn't depend on any state
+}, [])
 
   const getPerEachPrice = (price: string, unit: string) => {
     const num = parseFloat(price.replace(/[$,]/g, ''))
@@ -151,42 +124,41 @@ export default function CareersPage() {
     return `$${(num / count).toFixed(2)}`
   }
 
-  return (
+return (
     <div className="">
-      <h1 className="text-black h-9 bg-lime-400 text-md md:text-[0.9rem] flex items-center justify-center text-center px-4">
-        Welcome to the All New and Improved Würth Baer Supply Company Website!
-      </h1>
-      <div className="bg-gradient-to-t from-stone-900 to-amber-900 p-4 md:pb-1 md:pl-6 md:pr-6 md:pt-4">
+            <h1 className="text-black h-9 bg-lime-400 text-md md:text-[0.9rem] flex items-center justify-center text-center px-4">
+                Welcome to the All New and Improved Würth Baer Supply Company Website!
+            </h1>
+    <div className="bg-gradient-to-t from-stone-900 to-amber-900 p-4 md:pb-1 md:pl-6 md:pr-6 md:pt-4">
 
         {/* First Row: Carousel */}
         <div className="grid grid-cols-1 gap-2">
-          <div className="w-full">
-            <SimpleCarousel
-              images={images}
-              height="h-[600px]"
-              className="w-[400px] max-w-full mx-auto"
-              currentSlide={currentSlide}
-              setCurrentSlide={handleSetCurrentSlide}
-              onSlideChange={handleSlideChange}
-            />
-          </div>
+            <div className="w-full">
+                <SimpleCarousel
+                    images={images}
+                    height="h-[600px]"
+                    className="w-[400px] max-w-full mx-auto"
+                    currentSlide={currentSlide}
+                    setCurrentSlide={setCurrentSlide}
+                />
+            </div>
         </div>
         
-        <div className="flex justify-center space-x-2 py-4">
-          {images.map((_, index) => (
+    <div className="flex justify-center space-x-2 py-4">
+        {images.map((_, index) => (
             <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-colors hover:cursor-pointer ${
+            key={index}
+            onClick={() => setCurrentSlide(index)}
+            className={`w-2 h-2 rounded-full transition-colors hover:cursor-pointer ${
                 index === currentSlide 
-                  ? 'bg-white' 
-                  : 'border border-white hover:bg-amber-950/50'
-              }`}
+                    ? 'bg-white' 
+                    : 'border border-white hover:bg-amber-950/50'
+            }`}
             >
             </button>
-          ))}
-        </div>
-      </div>
+        ))}
+    </div>
+    </div>
 
     {/* Second Row: Three Equal Images */}
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 md:mt-8 px-2 md:px-0">
