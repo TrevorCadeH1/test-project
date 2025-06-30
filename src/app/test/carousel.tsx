@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 
 interface CarouselProps {
@@ -27,15 +27,17 @@ export default function SimpleCarousel({
   const currentSlide = externalCurrentSlide !== undefined ? externalCurrentSlide : internalCurrentSlide
   const setCurrentSlide = externalSetCurrentSlide || setInternalCurrentSlide
 
+  // Memoize the slide advance function to prevent unnecessary effect re-runs
+  const advanceSlide = useCallback(() => {
+    const newSlide = (currentSlide + 1) % images.length
+    setCurrentSlide(newSlide)
+    onSlideChange?.(newSlide)
+  }, [currentSlide, images.length, setCurrentSlide, onSlideChange])
+
   useEffect(() => {
-    const timer = setInterval(() => {
-      const newSlide = (currentSlide + 1) % images.length
-      setCurrentSlide(newSlide)
-      onSlideChange?.(newSlide)
-    }, autoplayDelay)
-    
+    const timer = setInterval(advanceSlide, autoplayDelay)
     return () => clearInterval(timer)
-  }, [images.length, autoplayDelay, currentSlide])
+  }, [advanceSlide, autoplayDelay])
 
   return (
     <div className={`relative w-full ${height} overflow-hidden ${className}`}>
