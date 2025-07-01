@@ -13,9 +13,21 @@ body {
 
 .bg-gray-blend {
   background:
-    linear-gradient(rgba(0,0,0,0.06), rgba(0,0,0,0.06)),
+    linear-gradient(rgba(242, 244, 249, 0.9), rgba(242, 244, 249, 0.9)),
     linear-gradient(white, white);
   background-blend-mode: multiply;
+}
+
+.bg-blue-blend {
+  background:
+    linear-gradient(#94f8ff33, #94f8ff33),
+    linear-gradient(#f3fbff, #f3fbff);
+  background-blend-mode: multiply;
+}
+
+.bg-orange-blend {
+  background:
+    linear-gradient(#da5802),
 }
 
 
