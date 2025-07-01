@@ -131,7 +131,7 @@ export default function CareersPage() {
             </h1>
             <div className="bg-gradient-to-t from-stone-900 to-amber-900 p-2 md:pb-1 md:pl-6 md:pr-6 md:pt-4">
         
-            {/* First Row: Carousel */}
+            {/* First Row: Carousel Section */}
             <div className="responsive-max-width grid grid-cols-1 gap-2">
                 <div className="w-full">
                     <SimpleCarousel
@@ -149,17 +149,16 @@ export default function CareersPage() {
                         key={index}
                         onClick={() => setCurrentSlide(index)}
                         className={`w-2 h-2 rounded-full transition-colors hover:cursor-pointer ${
-                            index === currentSlide 
-                                ? 'bg-white' 
+                            index === currentSlide
+                                ? 'bg-white'
                                 : 'border border-white hover:bg-amber-950/50'
                         }`}
-                        aria-label={`Go to slide ${index + 1}`}
                     />
                 ))}
             </div>
         </div>
 
-        {/* Second Row: Three Equal Images */}
+        {/* Second Row: Three Images Section */}
         <div className="responsive-max-width grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 md:mt-8 px-2 md:px-0">
             <div className="aspect-square">
                 <Image
@@ -208,9 +207,8 @@ export default function CareersPage() {
             </div>
         </div>
 
-        {/* Third Row: Daily Discounts */}
+        {/* Third Row: Daily Discounts Sections */}
         <div className="responsive-max-width mt-4 md:mt-4 flex items-center justify-center">
-
             <div className="relative pl-2 md:pl-10 w-full mr-2 md:mr-20">
                 <h1 className="text-2xl md:text-5xl font-bold text-black text-center md:text-left md:ml-190 mb-6 md:mb-10">
                     Daily Discounts
@@ -239,7 +237,7 @@ export default function CareersPage() {
                 style={{ scrollBehavior: 'smooth' }}
             >
                 {products.length ? (
-                products.map((p, i) => (
+                products.map(p => (
                     <div
                     key={p.id}
                     className="bg-white rounded-xl border border-neutral-200 w-[200px] md:w-[250px] flex-shrink-0 flex flex-col items-center p-3 md:p-4"
@@ -315,7 +313,7 @@ export default function CareersPage() {
             </div>
         </div>
     
-        {/* Fourth Row: Blum Products */}
+        {/* Fourth Row: Blum Products Section */}
         <div className="responsive-max-width bg-orange-500 mt-4 md:mt-8 w-full h-auto md:h-[1325px]">
             <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 mt-4 gap-4 md:gap-0">
                 <div className="flex items-center justify-center rounded-lg mr-2 md:mr-0 md:rounded-l-lg ml-2 md:ml-10 mt-4 md:mt-7 bg-orange-blend w-auto md:w-[1000px] h-auto md:h-[650px]">
@@ -347,7 +345,7 @@ export default function CareersPage() {
                 </div>
             </div>
 
-        {/* Fourth Row Part 2: Blum Product Cards */}
+        {/* Fourth Row Part 2: Blum Product Cards Section */}
         <div className="responsive-max-width relative mt-4 md:mt-8 pl-2 md:pl-12 pr-2 md:pr-11">
         <button
             type="button"
@@ -372,7 +370,7 @@ export default function CareersPage() {
             style={{ scrollBehavior: 'smooth' }}
         >
             {products.length ? (
-            products.map((p, i) => (
+            products.map(p => (
                 <div
                 key={p.id}
                 className="bg-white rounded-xl w-[200px] md:w-[250px] flex-shrink-0 flex flex-col items-center p-3 md:p-4"
@@ -432,7 +430,7 @@ export default function CareersPage() {
         <button
             type="button"
             className="hidden md:block absolute right-0 top-1/2 mr-0.25 -translate-y-1/2 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-300 transition disabled:opacity-30 print:hidden"
-           onClick={() => blumScrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
+            onClick={() => blumScrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
         >
             <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
             <path
@@ -455,7 +453,7 @@ export default function CareersPage() {
         </div>
         </div>
 
-        {/* Fifth Row: Featured Categories */}
+        {/* Fifth Row: Featured Categories Section */}
         <div className="responsive-max-width mt-20 flex items-center justify-center">
             <h1 className="text-2xl md:text-5xl font-bold text-black">
                 Featured Categories
@@ -620,7 +618,7 @@ export default function CareersPage() {
             </div>
         </div>
 
-    {/* Sixth Row: Why Shop With Us? */}
+    {/* Sixth Row: Why Shop With Us? Section */}
     <div className="responsive-max-width mt-10 md:mt-30 flex items-center justify-center">
         <h1 className="text-2xl md:text-5xl font-bold text-black">
             Why Shop With Us?
@@ -689,7 +687,7 @@ export default function CareersPage() {
         </div>
     </div>
 
-    {/* Seventh Row: Call and Back to Top */}
+    {/* Seventh Row: Call and Back to Top Section */}
     <div className="responsive-max-width flex flex-col md:flex-row mt-10 md:mt-20 gap-2 md:gap-0">
         <div className="flex items-start justify-start ml-2 md:ml-10 mt-2 md:mt-4 hover:cursor-pointer hover:underline hover:text-red-700 text-xs md:text-base">
             Need help? Call (800) 289-2237
@@ -707,7 +705,7 @@ export default function CareersPage() {
     <div className="border-t border-neutral-200 mt-4">
     </div>
 
-    {/* 8th Row: Footer Links */}
+    {/* 8th Row: Footer Links Section */}
     <div className="responsive-max-width grid grid-cols-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-4 lg:gap-0">
         <div className="flex flex-col items-start justify-start ml-10 lg:ml-10 md:gap-1 md:ml-6 sm:ml-4">
             <div className="text-neutral-400 text-lg mb-2">
