@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, useRef, useCallback } from "react"
+import React, { useState, useEffect, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import SimpleCarousel from "./carousel"
@@ -125,43 +125,42 @@ export default function CareersPage() {
   }
 
 return (
-    <div className="">
-            <h1 className="text-black h-9 bg-lime-400 text-md md:text-[0.9rem] flex items-center justify-center text-center px-4">
-                Welcome to the All New and Improved Würth Baer Supply Company Website!
-            </h1>
-    <div className="bg-gradient-to-t from-stone-900 to-amber-900 p-4 md:pb-1 md:pl-6 md:pr-6 md:pt-4">
-
+    <div className="responsive-max-width">
+        <h1 className="text-black h-9 bg-lime-400 text-xs md:text-lg flex items-center justify-center text-center px-2 md:px-4 leading-tight">
+            Welcome to the All New and Improved Würth Baer Supply Company Website!
+        </h1>
+    <div className="bg-gradient-to-t from-stone-900 to-amber-900 p-2 md:pb-1 md:pl-6 md:pr-6 md:pt-4">
+        
         {/* First Row: Carousel */}
-        <div className="grid grid-cols-1 gap-2">
+        <div className="responsive-max-width grid grid-cols-1 gap-2">
             <div className="w-full">
                 <SimpleCarousel
                     images={images}
-                    height="h-[600px]"
-                    className="w-[400px] max-w-full mx-auto"
+                    height="aspect-[16/5] md:h-[600px]"
+                    className="w-full max-w-full mx-auto"
                     currentSlide={currentSlide}
                     setCurrentSlide={setCurrentSlide}
                 />
             </div>
         </div>
-        
-    <div className="flex justify-center space-x-2 py-4">
-        {images.map((_, index) => (
-            <button
-            key={index}
-            onClick={() => setCurrentSlide(index)}
-            className={`w-2 h-2 rounded-full transition-colors hover:cursor-pointer ${
-                index === currentSlide 
-                    ? 'bg-white' 
-                    : 'border border-white hover:bg-amber-950/50'
-            }`}
-            >
-            </button>
-        ))}
-    </div>
+        <div className="flex justify-center space-x-2 py-3 md:py-4">
+            {images.map((_, index) => (
+                <button
+                    key={index}
+                    onClick={() => setCurrentSlide(index)}
+                    className={`w-2 h-2 rounded-full transition-colors hover:cursor-pointer ${
+                        index === currentSlide 
+                            ? 'bg-white' 
+                            : 'border border-white hover:bg-amber-950/50'
+                    }`}
+                    aria-label={`Go to slide ${index + 1}`}
+                />
+            ))}
+        </div>
     </div>
 
     {/* Second Row: Three Equal Images */}
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 md:mt-8 px-2 md:px-0">
+    <div className="responsive-max-width grid grid-cols-1 md:grid-cols-3 gap-4 mt-4 md:mt-8 px-2 md:px-0">
         <div className="aspect-square">
             <Image
                 src="/web6.png"
@@ -210,7 +209,7 @@ return (
     </div>
 
     {/* Third Row: Daily Discounts */}
-    <div className="mt-4 md:mt-4 flex items-center justify-center">
+    <div className="responsive-max-width mt-4 md:mt-4 flex items-center justify-center">
 
         <div className="relative pl-2 md:pl-10 w-full mr-2 md:mr-20">
             <h1 className="text-2xl md:text-5xl font-bold text-black text-center md:text-left md:ml-190 mb-6 md:mb-10">
@@ -317,10 +316,9 @@ return (
     </div>
     
     {/* Fourth Row: Blum Products */}
-    <div className="bg-orange-500 mt-4 md:mt-8 w-full h-auto md:h-[1325px]">
+    <div className="responsive-max-width bg-orange-500 mt-4 md:mt-8 w-full h-auto md:h-[1325px]">
         <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 mt-4 gap-4 md:gap-0">
-            <div className="flex items-center justify-center rounded-lg md:rounded-l-lg ml-2 md:ml-10 mt-4 md:mt-7 bg-amber-700 w-auto md:w-[1000px] h-auto md:h-[650px]">
-
+            <div className="flex items-center justify-center rounded-lg mr-2 md:mr-0 md:rounded-l-lg ml-2 md:ml-10 mt-4 md:mt-7 bg-amber-700 w-auto md:w-[1000px] h-auto md:h-[650px]">
                 <div className="flex flex-col justify-center items-start px-4 md:px-10 py-6 md:py-8 w-full">
                     <Image
                         src="/blum.png"
@@ -350,7 +348,7 @@ return (
         </div>
 
         {/* Fourth Row Part 2: Blum Product Cards */}
-        <div className="relative mt-4 md:mt-8 pl-2 md:pl-12 pr-2 md:pr-11">
+        <div className="responsive-max-width relative mt-4 md:mt-8 pl-2 md:pl-12 pr-2 md:pr-11">
         <button
             type="button"
             className="hidden md:block absolute ml-1 left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-300 transition disabled:opacity-30 print:hidden"
@@ -458,7 +456,7 @@ return (
         </div>
 
     {/* Fifth Row: Featured Categories */}
-    <div className="mt-20 flex items-center justify-center">
+    <div className="responsive-max-width mt-20 flex items-center justify-center">
         <h1 className="text-2xl md:text-5xl font-bold text-black">
             Featured Categories
         </h1>
@@ -623,7 +621,7 @@ return (
     </div>
 
     {/* Sixth Row: Why Shop With Us? */}
-    <div className="mt-10 md:mt-30 flex items-center justify-center">
+    <div className="responsive-max-width mt-10 md:mt-30 flex items-center justify-center">
         <h1 className="text-2xl md:text-5xl font-bold text-black">
             Why Shop With Us?
         </h1>
@@ -692,7 +690,7 @@ return (
     </div>
 
     {/* Seventh Row: Call and Back to Top */}
-    <div className="flex flex-col md:flex-row mt-10 md:mt-20 gap-2 md:gap-0">
+    <div className="responsive-max-width flex flex-col md:flex-row mt-10 md:mt-20 gap-2 md:gap-0">
         <div className="flex items-start justify-start ml-2 md:ml-10 mt-2 md:mt-4 hover:cursor-pointer hover:underline hover:text-red-700 text-xs md:text-base">
             Need help? Call (800) 289-2237
         </div>
@@ -710,7 +708,7 @@ return (
     </div>
 
     {/* 8th Row: Footer Links */}
-<div className="grid grid-cols-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-4 lg:gap-0">
+<div className="responsive-max-width grid grid-cols-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-4 lg:gap-0">
     <div className="flex flex-col items-start justify-start ml-10 lg:ml-10 md:ml-6 sm:ml-4">
         <div className="text-neutral-400 text-lg mb-4">
             Company Information
@@ -759,9 +757,8 @@ return (
 </div>
 
 {/* 9th Row: Social Media Section */}
-<div className="grid grid-rows-1 mt-4">
+<div className="responsive-max-width grid grid-rows-1 mt-4">
     <div className="flex lg:flex-row md:flex-col sm:flex-col items-start justify-start">
-        {/* Logo Section */}
         <div className="flex md:flex-row sm:flex-col flex-wrap md:flex-nowrap items-center md:items-start">
             <Image
                 src="/SAM.png"
@@ -808,7 +805,7 @@ return (
         </div>
 
         {/* Social Media Icons */}
-        <div className="flex flex-row gap-4 mt-120 md:mt-0 lg:pt-10 md:pt-6 sm:pt-4 pr-10 lg:pr-10 md:pr-6 sm:pr-4 justify-end lg:justify-end md:justify-center sm:justify-center w-full">
+        <div className="responsive-max-width flex flex-row gap-4 mt-120 md:mt-0 lg:pt-10 md:pt-6 sm:pt-4 pr-10 lg:pr-10 md:pr-6 sm:pr-4 justify-end lg:justify-end md:justify-center sm:justify-center w-full">
             <FaFacebook className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" />
             <FaInstagram className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" />
             <FaLinkedin className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" />
@@ -825,7 +822,7 @@ return (
 </div>
 
 {/* 10th Row: Terms & Conditions Section */}
-<div className="mt-8 w-full flex lg:flex-row md:flex-col sm:flex-col items-start flex-wrap md:flex-nowrap justify-start px-10 lg:px-10 md:px-6 sm:px-4 text-neutral-400 text-xs gap-4 lg:gap-0">
+<div className="responsive-max-width mt-8 w-full flex lg:flex-row md:flex-col sm:flex-col items-start flex-wrap md:flex-nowrap justify-start px-10 lg:px-10 md:px-6 sm:px-4 text-neutral-400 text-xs gap-4 lg:gap-0">
     <span className="text-nowrap lg:text-nowrap md:text-wrap sm:text-wrap">
         Copyright @ 2004-2025, Würth Baer Supply Company. All Rights Reserved.
     </span>

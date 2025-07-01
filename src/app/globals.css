@@ -27,3 +27,16 @@ body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+.responsive-max-width {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+}
+@media (min-width: 1280px) {
+    .responsive-max-width {
+        max-width: 1920px;
+    }
+}
+
+
