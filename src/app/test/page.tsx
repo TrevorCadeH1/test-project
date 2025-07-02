@@ -702,16 +702,14 @@ export default function CareersPage() {
         </div>
     </div>
 
-    <div className="border-t border-neutral-200 mt-4">
-    </div>
+    <div className="border-t border-neutral-200 mt-4" />
 
     {/* 8th Row: Footer Links Section */}
-    <div className="responsive-max-width grid grid-cols-4 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 mt-4 gap-4 lg:gap-0">
-        <div className="flex flex-col items-start justify-start ml-10 lg:ml-10 md:gap-1 md:ml-6 sm:ml-4">
+    <div className="responsive-max-width grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-4 mt-4">
+        <div className="flex flex-col items-start justify-start md:gap-1 ml-4 md:ml-6 lg:ml-10">
             <div className="text-neutral-400 text-lg mb-2">
                 Company Information
             </div>
-            
             <Link href="https://baersupply.vercel.app/aboutus"><span className="mb-2 hover:cursor-pointer hover:text-black/80 print:hover:cursor-default print:hover:text-current">About</span></Link>
             <Link href="https://baersupply.vercel.app/contactus"><span className="mb-2 hover:cursor-pointer hover:text-black/80 print:hover:cursor-default print:hover:text-current">Contact Us</span></Link>
             <Link href="https://recruiting.ultipro.com/WUR1001WGNA/JobBoard/a5bcdfc2-ab10-403c-a590-9dc0784f71fc/?q=&o=postedDateDesc"><span className="mb-2 hover:cursor-pointer hover:text-black/80 print:hover:cursor-default print:hover:text-current">Careers</span></Link>
@@ -724,7 +722,7 @@ export default function CareersPage() {
             <Link href="https://baersupply.vercel.app/faq"><span className="mb-2 hover:cursor-pointer hover:text-black/80 print:hover:cursor-default print:hover:text-current">FAQ</span></Link>
         </div>
 
-        <div className="flex flex-col items-start justify-start ml-10 lg:ml-10 md:gap-1 md:ml-6 sm:ml-4">
+        <div className="flex flex-col items-start justify-start md:gap-1 ml-4 md:ml-6 lg:ml-10">
             <div className="text-neutral-400 text-lg mb-2">
                 Shop With Us
             </div>
@@ -735,7 +733,7 @@ export default function CareersPage() {
             <Link href="https://baersupply.vercel.app/resource-center"><span className="mb-2 hover:cursor-pointer hover:text-black/80 print:hover:cursor-default print:hover:text-current">Vendor Literature</span></Link>
         </div>
 
-        <div className="flex flex-col items-start justify-start ml-10 lg:ml-10 md:gap-1 md:ml-6 sm:ml-4">
+        <div className="flex flex-col items-start justify-start md:gap-1 ml-4 md:ml-6 lg:ml-10">
             <div className="text-neutral-400 text-lg mb-2">
                 Services
             </div>
@@ -745,7 +743,7 @@ export default function CareersPage() {
             <Link href="https://baersupply.vercel.app/largemachinery"><span className="mb-2 hover:cursor-pointer hover:text-black/80 print:hover:cursor-default print:hover:text-current">Machinery</span></Link>
         </div>
 
-        <div className="flex flex-col items-start justify-start ml-10 lg:ml-10 md:ml-6 sm:ml-4">
+        <div className="flex flex-col items-start justify-start ml-4 md:ml-6 lg:ml-10">
             <div className="text-neutral-400 text-lg mb-2">
                 Contact
             </div>
@@ -816,34 +814,44 @@ export default function CareersPage() {
         </div>
     </div>
 
-    <div className="mt-4 ml-10 lg:ml-10 md:ml-6 sm:ml-4 mr-10 lg:mr-10 md:mr-6 sm:mr-4 border-b border-neutral-200">
-    </div>
+    <div className="mt-4 mx-4 md:mx-6 lg:mx-10 border-b border-neutral-200" />
 
     {/* 10th Row: Terms & Conditions Section */}
-    <div className="responsive-max-width mt-8 w-full flex lg:flex-row md:flex-col sm:flex-col items-start flex-wrap md:flex-nowrap justify-start px-10 lg:px-10 md:px-6 sm:px-4 text-neutral-500 text-xs gap-4 lg:gap-0">
-        <span className="text-nowrap lg:text-nowrap md:text-wrap sm:text-wrap">
+    <div className="responsive-max-width mt-8 w-full flex flex-col lg:flex-row items-start lg:items-center flex-wrap lg:flex-nowrap justify-start px-4 md:px-6 lg:px-10 text-neutral-500 text-xs gap-2 lg:gap-0">
+        <span className="text-nowrap mb-2 lg:mb-0">
             Copyright @ 2004-2025, Würth Baer Supply Company. All Rights Reserved.
         </span>
-        
-        <div className="flex lg:justify-end md:justify-start sm:justify-start lg:flex-row md:flex-col sm:flex-col gap-4 lg:gap-4 md:gap-2 sm:gap-2 w-full lg:w-full md:w-auto sm:w-auto">
-            <Link href="https://baersupply.vercel.app/terms-conditions"><span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
-                Terms & Conditions
-            </span></Link>
-            <Link href="https://baersupply.vercel.app/privacy"><span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
-                Privacy Notice
-            </span></Link>
-            <Link href="https://baersupply.vercel.app/accessibility"><span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
-                Accessibility
-            </span></Link>
-            <Link href="https://baersupply.vercel.app/rightsrequest"><span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
-                Do Not Sell My Personal Information
-            </span></Link>
-            <Link href="https://baersupply.vercel.app/compliance"><span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
-                Würth Compliance
-            </span></Link>
-            <Link href="https://baersupply.vercel.app/sitefeedback"><span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
-                Site Feedback
-            </span></Link>
+        <div className="flex flex-wrap lg:flex-nowrap gap-x-4 gap-y-2 w-full md:w-full lg:w-full justify-start md:justify-end lg:justify-end">
+            <Link href="https://baersupply.vercel.app/terms-conditions">
+                <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    Terms & Conditions
+                </span>
+            </Link>
+            <Link href="https://baersupply.vercel.app/privacy">
+                <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    Privacy Notice
+                </span>
+            </Link>
+            <Link href="https://baersupply.vercel.app/accessibility">
+                <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    Accessibility
+                </span>
+            </Link>
+            <Link href="https://baersupply.vercel.app/rightsrequest">
+                <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    Do Not Sell My Personal Information
+                </span>
+            </Link>
+            <Link href="https://baersupply.vercel.app/compliance">
+                <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    Würth Compliance
+                </span>
+            </Link>
+            <Link href="https://baersupply.vercel.app/sitefeedback">
+                <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    Site Feedback
+                </span>
+            </Link>
             <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
                 Sitemap
             </span>
