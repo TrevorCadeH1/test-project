@@ -793,7 +793,7 @@ export default function CareersPage() {
                     className="w-auto h-auto mt-6 lg:mt-6 md:mt-6 sm:mt-0 ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
                 />
                 <Image
-                    src="/DIGICERT.png"
+                    src="/digicert.png"
                     alt="DIGICERT Photo"
                     width={300}
                     height={300}

@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 
 interface CarouselProps {
@@ -23,37 +23,46 @@ export default function SimpleCarousel({
   setCurrentSlide: externalSetCurrentSlide
 }: CarouselProps) {
   const [internalCurrentSlide, setInternalCurrentSlide] = useState(0)
-  
   const currentSlide = externalCurrentSlide !== undefined ? externalCurrentSlide : internalCurrentSlide
   const setCurrentSlide = externalSetCurrentSlide || setInternalCurrentSlide
+  const timerRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    const timer = setInterval(() => {
+    timerRef.current && clearInterval(timerRef.current)
+    timerRef.current = setInterval(() => {
       const newSlide = (currentSlide + 1) % images.length
       setCurrentSlide(newSlide)
       onSlideChange?.(newSlide)
     }, autoplayDelay)
-    
-    return () => clearInterval(timer)
+    return () => {
+      timerRef.current && clearInterval(timerRef.current)
+    }
   }, [images.length, autoplayDelay, currentSlide])
 
   return (
-    <div className={`relative w-full ${height} overflow-hidden ${className}`}>
-      {images.map((src, index) => (
-        <div
-          key={index}
-          className={`absolute inset-0 transition-opacity duration-500 ${
-            index === currentSlide ? 'opacity-100' : 'opacity-0'
-          }`}
-        >
-          <Image
-            src={src}
-            alt={`Slide ${index + 1}`}
-            fill
-            className="object-cover"
-          />
-        </div>
-      ))}
+    <div className={`relative w-full overflow-hidden ${height} ${className}`}>
+      <div
+        className="flex transition-transform duration-700 ease-in-out h-full"
+        style={{
+          width: `${images.length * 100}%`,
+          transform: `translateX(-${currentSlide * (100 / images.length)}%)`,
+        }}
+      >
+        {images.map((src, index) => (
+          <div
+            key={index}
+            className="relative flex-shrink-0 w-full h-full"
+            style={{ width: `${100 / images.length}%` }}
+          >
+            <Image
+              src={src}
+              alt={`Slide ${index + 1}`}
+              fill
+              className="object-cover rounded-lg"
+            />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
