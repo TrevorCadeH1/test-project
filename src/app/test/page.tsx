@@ -821,7 +821,7 @@ export default function CareersPage() {
         <span className="text-nowrap mb-2 lg:mb-0">
             Copyright @ 2004-2025, Würth Baer Supply Company. All Rights Reserved.
         </span>
-        <div className="flex flex-wrap lg:flex-nowrap gap-x-4 gap-y-2 w-full md:w-full lg:w-full justify-start md:justify-end lg:justify-end">
+        <div className="flex flex-wrap lg:flex-nowrap gap-x-4 gap-y-2 w-full md:w-full lg:w-full justify-start lg:justify-end">
             <Link href="https://baersupply.vercel.app/terms-conditions">
                 <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
                     Terms & Conditions
