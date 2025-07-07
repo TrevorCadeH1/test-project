@@ -9,6 +9,9 @@ import { FiDownload } from "react-icons/fi"
 import { MdFavoriteBorder } from "react-icons/md"
 import Footer from "./footer"
 import Header from "./header"
+import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
+
 
 type Product = {
   id: string
@@ -211,15 +214,7 @@ export default function CareersPage() {
                 className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-200 transition disabled:opacity-30 print:hidden"
                 onClick={() => DiscountScrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
             >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path
-                    d="M15 19l-7-7 7-7"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                </svg>
+                <IoIosArrowBack className ="w-[25px] h-[25px]"/>
             </button>
 
             <div
@@ -291,15 +286,7 @@ export default function CareersPage() {
                 className="hidden md:block absolute -right-7 top-1/2 -translate-y-1/2 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-300 transition disabled:opacity-30 print:hidden"
             onClick={() => DiscountScrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
             >
-                <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-                <path
-                    d="M9 5l7 7-7 7"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                />
-                </svg>
+                <IoIosArrowForward className ="w-[25px] h-[25px]"/>
             </button>
             </div>
             </div>
@@ -344,15 +331,7 @@ export default function CareersPage() {
             className="hidden md:block absolute ml-1 left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-300 transition disabled:opacity-30 print:hidden"
             onClick={() => blumScrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
         >
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path
-                d="M15 19l-7-7 7-7"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-            </svg>
+            <IoIosArrowBack className ="w-[25px] h-[25px]"/>
         </button>
 
         <div
@@ -424,15 +403,7 @@ export default function CareersPage() {
             className="hidden md:block absolute right-0 top-1/2 mr-0.25 -translate-y-1/2 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-300 transition disabled:opacity-30 print:hidden"
             onClick={() => blumScrollRef.current?.scrollBy({ left: 300, behavior: 'smooth' })}
         >
-            <svg width="24" height="24" fill="none" viewBox="0 0 24 24">
-            <path
-                d="M9 5l7 7-7 7"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-            </svg>
+            <IoIosArrowForward className ="w-[25px] h-[25px]"/>
         </button>
 
         <div className="flex items-center justify-center mt-6 md:mt-10 ml-2 md:ml-10 pb-4 md:pb-0">
