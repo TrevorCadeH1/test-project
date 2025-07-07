@@ -308,7 +308,7 @@ export default function CareersPage() {
         {/* Fourth Row: Blum Products Section */}
         <div className="responsive-max-width bg-orange-500 mt-4 md:mt-8 w-full h-auto md:h-[1325px]">
             <div className="grid grid-cols-1 md:grid-cols-2 md:grid-rows-1 mt-4 gap-4 md:gap-0">
-                <div className="flex items-center justify-center rounded-lg mr-0 md:mr-0 md:rounded-l-lg ml-2 md:ml-10 mt-4 md:mt-7 bg-orange-blend w-auto md:w-[1000px] h-auto md:h-[650px]">
+                <div className="flex items-center justify-center rounded-lg mr-2 md:mr-0 md:rounded-l-lg ml-2 md:ml-10 mt-4 md:mt-7 bg-orange-blend w-auto md:w-[1000px] h-auto md:h-[650px]">
                     <div className="flex flex-col justify-center items-start px-4 md:px-10 py-6 md:py-8 w-full">
                         <Image
                             src="/blum.png"
@@ -332,7 +332,7 @@ export default function CareersPage() {
                         alt="Blum Products"
                         width={600}
                         height={600}
-                        className="w-full h-[300px] md:w-[820px] md:h-[650px] object-cover rounded-lg md:rounded-r-lg md:rounded-l-none"
+                        className="w-full ml-2 md:ml-0 h-[300px] md:w-[820px] md:h-[650px] object-cover rounded-lg md:rounded-r-lg md:rounded-l-none"
                     />
                 </div>
             </div>
