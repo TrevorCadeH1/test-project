@@ -151,36 +151,36 @@ export default function Footer() {
                 </span>
                 <div className="flex flex-wrap lg:flex-nowrap gap-x-4 gap-y-2 w-full md:w-full lg:w-full justify-start lg:justify-end">
                     <Link href="https://baersupply.vercel.app/terms-conditions">
-                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                             Terms & Conditions
                         </span>
                     </Link>
                     <Link href="https://baersupply.vercel.app/privacy">
-                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                             Privacy Notice
                         </span>
                     </Link>
                     <Link href="https://baersupply.vercel.app/accessibility">
-                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                             Accessibility
                         </span>
                     </Link>
                     <Link href="https://baersupply.vercel.app/rightsrequest">
-                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                             Do Not Sell My Personal Information
                         </span>
                     </Link>
                     <Link href="https://baersupply.vercel.app/compliance">
-                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                             Würth Compliance
                         </span>
                     </Link>
                     <Link href="https://baersupply.vercel.app/sitefeedback">
-                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                        <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                             Site Feedback
                         </span>
                     </Link>
-                    <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline print:hover:cursor-default">
+                    <span className="text-neutral-500 hover:underline hover:cursor-pointer print:hover:no-underline">
                         Sitemap
                     </span>
                 </div>

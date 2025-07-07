@@ -9,6 +9,7 @@ import { FiDownload } from "react-icons/fi"
 import { MdFavoriteBorder } from "react-icons/md"
 import Footer from "./footer"
 import Header from "./header"
+
 type Product = {
   id: string
   name: string

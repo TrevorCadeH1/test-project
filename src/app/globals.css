@@ -30,6 +30,11 @@ body {
     linear-gradient(#dd5308),
 }
 
+.bg-green-blend {
+  background:
+    linear-gradient(#bbd61f, #bbd61f);
+}
+
 
 .hide-scrollbar::-webkit-scrollbar {
   display: none;
@@ -49,6 +54,11 @@ body {
     .responsive-max-width {
         max-width: 1920px;
     }
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+  display: none;
 }
 
 
