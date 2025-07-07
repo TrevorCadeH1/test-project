@@ -127,17 +127,16 @@ export default function Footer() {
                             height={300}
                             className="w-auto h-auto mt-5 lg:mt-5 md:mt-5 sm:mt-0 ml-4 lg:ml-4 md:ml-4 sm:ml-4 mb-2 sm:mb-4"
                         />
-                    </div>
-
-                    <div className="responsive-max-width flex flex-row gap-4 mt-120 md:mt-0 lg:pt-10 md:pt-6 sm:pt-4 pr-10 lg:pr-10 md:pr-6 sm:pr-4 justify-end lg:justify-end md:justify-center sm:justify-center w-full">
-                        <Link href="https://www.facebook.com/wurthbaersupply"><FaFacebook className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://www.instagram.com/wurthbaer/"><FaInstagram className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://www.linkedin.com/uas/login?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2F291263"><FaLinkedin className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://x.com/WurthBaerSupply"><FaXTwitter className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://www.pinterest.com/wurthbaersupply/"><FaPinterest className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://www.youtube.com/channel/UCWgXJp8XZ1hCkTe7AvrMJVQ"><FaYoutube className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://www.tiktok.com/@wurthbaersupplycompany"><FaTiktok className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
-                        <Link href="https://blogs.wurthbaersupply.com/"><RiFilePaperFill className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                        <div className="responsive-max-width flex flex-row gap-4 mt-2 md:mt-0 lg:pt-10 md:pt-6 sm:pt-4 pr-20 pl-4 lg:pr-10 md:pr-6 sm:pr-4 md:pl-140 justify-end lg:justify-end md:justify-center sm:justify-center w-full">
+                            <Link href="https://www.facebook.com/wurthbaersupply"><FaFacebook className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://www.instagram.com/wurthbaer/"><FaInstagram className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://www.linkedin.com/uas/login?session_redirect=https%3A%2F%2Fwww.linkedin.com%2Fcompany%2F291263"><FaLinkedin className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://x.com/WurthBaerSupply"><FaXTwitter className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://www.pinterest.com/wurthbaersupply/"><FaPinterest className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://www.youtube.com/channel/UCWgXJp8XZ1hCkTe7AvrMJVQ"><FaYoutube className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://www.tiktok.com/@wurthbaersupplycompany"><FaTiktok className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                            <Link href="https://blogs.wurthbaersupply.com/"><RiFilePaperFill className="w-[20px] h-[20px] hover:cursor-pointer hover:text-red-800 print:hover:cursor-default print:hover:text-current" /></Link>
+                        </div>
                     </div>
                 </div>
             </div>

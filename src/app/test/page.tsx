@@ -173,7 +173,7 @@ export default function CareersPage() {
                     className="w-full h-full md:w-[600px] md:h-[580px] object-cover border-b-60 border-neutral-800 rounded"
                 />
                 <Link href="https://baersupply.vercel.app/category/2220/sawstop-and-accessories">
-                <button className="absolute bottom-4 -ml-20 md:mb-1 md:ml-0 md:bottom-13 left-1/2 md:left-20 transform -translate-x-1/2 font-semibold bg-red-600 text-white px-3 py-1.5 rounded flex items-center gap-2 hover:cursor-pointer text-sm print:hidden">
+                <button className="absolute bottom-4 md:mb-10 md:ml-0 left-18 md:left-20 transform -translate-x-1/2 font-semibold bg-red-600 text-white px-3 py-1.5 rounded flex items-start gap-2 hover:cursor-pointer text-sm print:hidden">
                     Shop Now <IoIosArrowRoundForward className="text-xl md:text-2xl" />
                 </button>
                 </Link>
@@ -271,7 +271,7 @@ export default function CareersPage() {
                         Add to proposal
                         </button>
                         <button>
-                        <MdFavoriteBorder className="text-xl md:text-2xl hover:cursor-pointer hover:bg-neutral-100 transition-colors" />
+                        <MdFavoriteBorder className="text-xl md:text-2xl hover:cursor-pointer hover:bg-neutral-100 transition-colors"/>
                         </button>
                     </div>
                     </div>
