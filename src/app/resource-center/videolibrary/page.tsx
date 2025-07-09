@@ -3,12 +3,16 @@
 import React from 'react';
 import Header from '../../test/header';
 import Footer from '../../test/footer';
+import Sidebar from '../sidebar';
 
 export default function VideoLibraryPage() {
     return(
         <div className="responsive-max-width min-h-screen flex flex-col">
             <Header />
-            <div className="flex flex-1 justify-center items-center px-2 sm:px-0">
+            <div className="sm:w-auto w-full flex justify-center sm:justify-start">
+                <Sidebar />
+            </div>
+            <div className="flex flex-1 justify-center items-center -mt-10 md:-mt-40 px-2 sm:px-0">
                 <div className="flex flex-col items-center">
                     <div className="text-black font-semibold text-4xl mt-10">
                         Video Library
