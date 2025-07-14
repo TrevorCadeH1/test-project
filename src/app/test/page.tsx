@@ -49,7 +49,7 @@ export default function CareersPage() {
                     {
                         method: 'GET',
                         headers: {
-                            'X-AUTH-TOKEN': 'e89d6c2370505652668abf9cc40194bc',
+                            'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN2!,
                         }
                     }
                 )
