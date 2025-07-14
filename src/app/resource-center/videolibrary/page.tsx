@@ -9,6 +9,7 @@ export default function VideoLibraryPage() {
     return(
         <div className="responsive-max-width min-h-screen flex flex-col">
             <Header />
+            
             <div className="sm:w-auto w-full flex justify-center sm:justify-start">
                 <Sidebar />
             </div>

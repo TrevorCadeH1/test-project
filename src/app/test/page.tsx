@@ -44,15 +44,8 @@ export default function CareersPage() {
     useEffect(() => {
         async function fetchProducts() {
             try {
-                const res = await fetch(
-                    'https://wbscdev.wurthbaersupply.com/rest/getrandomgroups',
-                    {
-                        method: 'GET',
-                        headers: {
-                            'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN2!,
-                        }
-                    }
-                )
+                const res = await fetch('/api/products')
+                
                 if (!res.ok) {
                     throw new Error(`API error: ${res.status}`)
                 }
