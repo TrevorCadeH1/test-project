@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
 import Header from '../test/header';
 import Footer from '../test/footer';
 
@@ -10,13 +12,36 @@ export default function SignInPage() {
     const [password, setPassword] = useState('');
     const [passwordTouched, setPasswordTouched] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState('');
+    
+    const { login } = useAuth();
+    const router = useRouter();
 
-    const handleSubmit = (e: React.FormEvent) => {
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setEmailTouched(true);
         setPasswordTouched(true);
+        setError('');
 
         if (!email || !password) return;
+
+        setIsLoading(true);
+
+        try {
+            const result = await login(email, password);
+            
+            if (result.success) {
+                // Redirect to the main page on when logged in
+                router.push('/test');
+            } else {
+                setError(result.message || 'Login failed. Please check your credentials.');
+            }
+        } catch (err) {
+            setError('An unexpected error occurred. Please try again.');
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (
@@ -28,15 +53,23 @@ export default function SignInPage() {
                     <p className="text-center text-black mb-6 text-sm sm:text-md">
                         Log into your account to access custom pricing, exclusive discounts, personalized support, and many more.
                     </p>
+                    
+                    {error && (
+                        <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded mb-4 text-sm">
+                            {error}
+                        </div>
+                    )}
+                    
                     <form onSubmit={handleSubmit} noValidate>
                         <div className="mb-4">
                             <input
                                 type="text"
                                 placeholder="Email/User ID"
-                                className="w-full border border-neutral-200 rounded px-3 py-2 focus:outline-none text-sm sm:text-base"
+                                className="w-full border border-neutral-200 rounded px-3 py-2 focus:outline-none text-sm sm:text-base text-black"
                                 value={email}
                                 onChange={e => setEmail(e.target.value)}
                                 onBlur={() => setEmailTouched(true)}
+                                disabled={isLoading}
                             />
                             {emailTouched && !email && (
                                 <p className="text-red-500 text-xs mt-1">Email/User ID is required</p>
@@ -46,10 +79,11 @@ export default function SignInPage() {
                             <input
                                 type={showPassword ? 'text' : 'password'}
                                 placeholder="Password"
-                                className="w-full border border-neutral-200 rounded px-3 py-2 focus:outline-none text-sm sm:text-base"
+                                className="w-full border border-neutral-200 rounded px-3 py-2 focus:outline-none text-sm sm:text-base text-black"
                                 value={password}
                                 onChange={e => setPassword(e.target.value)}
                                 onBlur={() => setPasswordTouched(true)}
+                                disabled={isLoading}
                             />
                             <button
                                 type="button"
@@ -65,11 +99,13 @@ export default function SignInPage() {
                         </div>
                         <button
                             type="submit"
+                            disabled={isLoading || !email || !password}
                             className="w-full bg-black text-white font-semibold hover:cursor-pointer hover:bg-black/80 py-2 rounded mt-2 text-sm sm:text-base"
                         >
-                            Sign in
+                            {isLoading ? 'Signing in...' : 'Sign in'}
                         </button>
                     </form>
+                    
                     <div className="flex flex-row justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-black mt-4">
                         <a href="#" className="hover:underline hover:text-red-700">Forgot user ID?</a>
                         <span className="inline">&bull;</span>

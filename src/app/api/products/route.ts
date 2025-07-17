@@ -15,9 +15,13 @@ export async function GET() {
         }
         
         const data = await res.json()
+        
+        if (data.groups) {
+        }
+        
         return Response.json(data)
     } catch (error) {
-        console.error('API error:', error)
+        console.error('API error occurred:', error)
         return Response.json({ error: 'Failed to fetch products' }, { status: 500 })
     }
 }
