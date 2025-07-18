@@ -5,7 +5,7 @@ export async function GET() {
             {
                 method: 'GET',
                 headers: {
-                    'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN2!,
+                    'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!,
                 }
             }
         )
