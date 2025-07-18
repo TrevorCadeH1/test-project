@@ -52,7 +52,7 @@ const fallbackPricing: Record<string, { price: string; unit: string }> = {
   "9": { price: "$34.25", unit: "Set" }
 }
 
-export default function ClientPage({ initialAuth, serverProducts, serverPricing }: ClientPageProps) {
+export default function ClientPage({ serverProducts, serverPricing }: ClientPageProps) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const [products, setProducts] = useState<Product[]>(serverProducts)
     const blumScrollRef = useRef<HTMLDivElement>(null)

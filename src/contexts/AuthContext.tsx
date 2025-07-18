@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           localStorage.setItem('wurth_user_data', JSON.stringify(data.user))
           setUser(data.user)
         }
-        
+
         setIsAuthenticated(true)
         return { success: true }
       } else {

@@ -116,7 +116,6 @@ export const renewToken = async (credentials: { username: string; password: stri
   }
 }
 
-// Helper to check if token needs renewal
 export const needsRenewal = (): boolean => {
   return !tokenStorage.isValid()
 }

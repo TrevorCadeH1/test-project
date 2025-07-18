@@ -59,7 +59,6 @@ async function getServerSideProducts(): Promise<Product[]> {
 
         let qty = 1
         const productId = item.productid || item.id?.toString() || `${654309 + idx}`
-        
         // Products that show full price
         if (productId === '654309') {
           qty = 1000

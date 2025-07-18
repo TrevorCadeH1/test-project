@@ -1,8 +1,8 @@
 'use client'
 
 import React, { useState } from 'react';
-import Header from '../test/header';
-import Footer from '../test/footer';
+import Header from '../home/header';
+import Footer from '../home/footer';
 import { CiAt } from "react-icons/ci";
 import { FaComputer } from "react-icons/fa6";
 import { GrWheelchair } from "react-icons/gr";
