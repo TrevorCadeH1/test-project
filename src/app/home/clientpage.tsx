@@ -82,97 +82,6 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
         }
     }, [isAuthenticated, products, fetchPrices])
 
-    // Fallback to fetch products client-side if they weren't provided by server
-    useEffect(() => {
-        if (products.length === 0) {
-            async function fetchProducts() {
-                try {
-                    const res = await fetch('/api/products')
-                    
-                    if (!res.ok) {
-                        throw new Error(`API error: ${res.status}`)
-                    }
-
-                    const data = await res.json()
-                    const allItems: any[] = Array.isArray(data.groups)
-                        ? data.groups.flatMap((group: any) => group.itemSkuList || [])
-                        : []
-
-                    if (allItems.length > 0) {
-                        const apiProducts = allItems.slice(0, 9).map((item, idx) => {
-                            const key = (idx + 1).toString()
-                            const { price, unit } = fallbackPricing[key] || { price: "$0", unit: "Each" }
-
-                            let qty = 1
-                            const productId = item.productid || item.id?.toString() || `${654309 + idx}`
-                            
-                            if (productId === '654309') {
-                                qty = 1000
-                            } else if (idx === 0 || idx === 3) {
-                                qty = 1000
-                            } else {
-                                qty = item.txt_min_order_amount ? parseInt(item.txt_min_order_amount) : 
-                                     item.txt_order_qty_increments ? parseInt(item.txt_order_qty_increments) : 1
-                            }
-
-                            return {
-                                id: item.id?.toString() || `product-${idx}`,
-                                name: item.item_name || `Product ${idx + 1}`, 
-                                manufacturerNumber: item.txt_wurth_lac_item || `MFG-${idx + 1}`,
-                                imageUrl: item.img || '/wswu1.png',
-                                price,
-                                unit,
-                                productid: productId,
-                                qty
-                            } as Product
-                        })
-                        setProducts(apiProducts)
-                    } else {
-                        // Fallback products
-                        const fallbackProducts = Array.from({ length: 9 }, (_, idx) => {
-                            const key = (idx + 1).toString()
-                            const { price, unit } = fallbackPricing[key]
-                            const qty = (idx === 0 || idx === 3) ? 1000 : 1
-                            
-                            return {
-                                id: `fallback-${idx + 1}`,
-                                name: `Blum Hardware Product ${idx + 1}`,
-                                manufacturerNumber: `BLUM-${idx + 1}`,
-                                imageUrl: '/wswu1.png',
-                                price,
-                                unit,
-                                productid: `${654309 + idx}`,
-                                qty
-                            }
-                        })
-                        setProducts(fallbackProducts)
-                    }
-                } catch (error) {
-                    // Error fallback products
-                    const fallbackProducts = Array.from({ length: 9 }, (_, idx) => {
-                        const key = (idx + 1).toString()
-                        const { price, unit } = fallbackPricing[key]
-                        const qty = (idx === 0 || idx === 3) ? 1000 : 1
-                        
-                        return {
-                            id: `error-${idx + 1}`,
-                            name: `Blum Hardware Product ${idx + 1}`,
-                            manufacturerNumber: `BLUM-${idx + 1}`,
-                            imageUrl: '/wswu1.png',
-                            price,
-                            unit,
-                            productid: `${654309 + idx}`,
-                            qty
-                        }
-                    })
-                    setProducts(fallbackProducts)
-                }
-            }
-
-            fetchProducts()
-        }
-    }, [])
-
     // Display price for a product
     const getDisplayPrice = (product: Product) => {
         // If authenticated and we have client-side pricing
@@ -180,7 +89,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
             return prices[product.productid]
         }
         
-        // If not authenticated and we have server-side pricing
+        // If not authenticated, check server-side pricing
         if (!isAuthenticated && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
             return serverPricingMap[product.productid]
         }
@@ -282,7 +191,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
                 />
                 <Link href="https://baersupply.vercel.app/category/2220/sawstop-and-accessories">
                 <button className="absolute bottom-4 md:mb-10 md:ml-0 left-18 md:left-20 transform -translate-x-1/2 font-semibold bg-red-600 text-white px-3 py-1.5 rounded flex items-start gap-2 hover:cursor-pointer text-sm print:hidden">
-                    Shop Now <IoIosArrowRoundForward className="text-xl md:text-2xl" />
+                    <span className="md:mt-0.25">Shop Now</span> <IoIosArrowRoundForward className="text-xl md:text-2xl" />
                 </button>
                 </Link>
                 <a
@@ -406,7 +315,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
                             height={50}
                             className="mb-6 md:mb-20 w-20 md:w-30 h-auto"
                         />
-                        <h1 className="text-white font-bold text-xl md:text-[2.5rem] mb-4 md:mb-5 leading-tight">
+                        <h1 className="text-white font-bold text-xl md:text-[3rem] mb-4 md:mb-5 leading-tight">
                             Blum: Pioneering Solutions for Today's Cabinetry Demands
                         </h1>
                         <p className="text-white text-sm md:text-lg mb-6 md:mb-40">

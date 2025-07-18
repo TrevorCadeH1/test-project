@@ -36,9 +36,9 @@ const fallbackPricing: Record<string, { price: string; unit: string }> = {
 // Server-side function to fetch products
 async function getServerSideProducts(): Promise<Product[]> {
   try {
-    const response = await fetch('https://wbscdev.wurthbaersupply.com/rest/getrandomgroups', {
+    const response = await fetch(`${process.env.WURTH_API_BASE_URL}/rest/getrandomgroups`, {
       headers: {
-        'X-AUTH-TOKEN': 'e89d6c2370505652668abf9cc40194bc'
+        'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!
       },
       next: { revalidate: 300 }
     })
@@ -115,11 +115,11 @@ function createFallbackProducts(): Product[] {
 // Server-side function to fetch pricing for non-authenticated users
 async function getServerSidePricing(products: { productid: string; qty: number }[]): Promise<ServerPricingData[] | null> {
   try {
-    const response = await fetch('https://wbscdev.wurthbaersupply.com/rest/pricecheck', {
+    const response = await fetch(`${process.env.WURTH_API_BASE_URL}/rest/pricecheck`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'X-AUTH-TOKEN': 'e89d6c2370505652668abf9cc40194bc'
+        'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!
       },
       body: JSON.stringify({ products }),
       next: { revalidate: 300 }
@@ -143,7 +143,7 @@ async function getServerSidePricing(products: { productid: string; qty: number }
         const qty = requestQtyMap[productid] || item.qty
         const totalPrice = item.extended
         const unitPrice = item.price || item.list_price
-        
+
         if (qty > 1) {
           return {
             productid,
@@ -174,8 +174,8 @@ async function getServerSidePricing(products: { productid: string; qty: number }
 async function isAuthenticated(): Promise<boolean> {
   try {
     const cookieStore = await cookies()
-    // Check for your specific authorization cookie
-    return cookieStore.has('xid_00924') || cookieStore.has('auth-token') || cookieStore.has('session')
+    // Check for specific authorization cookie
+    return cookieStore.has('xid_00924')
   } catch {
     return false
   }

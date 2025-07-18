@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      jose:
+        specifier: ^6.0.12
+        version: 6.0.12
       lucide-react:
         specifier: ^0.525.0
         version: 0.525.0(react@19.1.0)
@@ -1298,6 +1301,9 @@ packages:
   jiti@2.4.2:
     resolution: {integrity: sha512-rg9zJN+G4n2nfJl5MW3BMygZX56zKPNVEYYqq7adpmMh4Jn2QNEwhvQlFy6jPVdcod7txZtKHWnyZiA3a0zP7A==}
     hasBin: true
+
+  jose@6.0.12:
+    resolution: {integrity: sha512-T8xypXs8CpmiIi78k0E+Lk7T2zlK4zDyg+o1CZ4AkOHgDg98ogdP2BeZ61lTFKFyoEwJ9RgAgN+SdM3iPgNonQ==}
 
   jquery@3.7.1:
     resolution: {integrity: sha512-m4avr8yL8kmFN8psrbFFFmB/If14iN5o9nw/NgnnM+kybDJpRsAynV2BsfpTYrTRysYUdADVD7CkUUizgkpLfg==}
@@ -3270,6 +3276,8 @@ snapshots:
       set-function-name: 2.0.2
 
   jiti@2.4.2: {}
+
+  jose@6.0.12: {}
 
   jquery@3.7.1: {}
 

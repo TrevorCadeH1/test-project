@@ -9,7 +9,7 @@ import { RxExit } from "react-icons/rx";
 
 export default function AuthButton() {
   const router = useRouter()
-  const { isAuthenticated, isLoading, logout, user } = useAuth()
+  const { isAuthenticated, isLoading, logout } = useAuth()
 
   if (isLoading) {
     return (
@@ -41,7 +41,7 @@ export default function AuthButton() {
       className="flex items-center space-x-1 px-4 py-2 mr-4 bg-white text-black font-sans rounded hover:cursor-pointer transition-colors text-lg font-medium"
     >
       <FaRegUserCircle className="text-black" size={24} />
-      <span>Sign in / Register</span>
+      <span className="ml-1">Sign in / Register</span>
     </button>
     </>
   )

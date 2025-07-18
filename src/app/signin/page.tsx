@@ -3,8 +3,8 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
-import Header from '../test/header';
-import Footer from '../test/footer';
+import Header from '../home/header';
+import Footer from '../home/footer';
 
 export default function SignInPage() {
     const [email, setEmail] = useState('');
@@ -32,8 +32,8 @@ export default function SignInPage() {
             const result = await login(email, password);
             
             if (result.success) {
-                // Redirect to the main page on when logged in
-                router.push('/test');
+                // Redirect to the main page when logged in
+                router.push('/home');
             } else {
                 setError(result.message || 'Login failed. Please check your credentials.');
             }
@@ -114,7 +114,7 @@ export default function SignInPage() {
                     <div className="border-t border-neutral-200 mt-4" />
                     <div className="text-center text-xs sm:text-sm mt-4 text-black mb-2">
                         Don't have an online account?
-                        <button className="border border-neutral-300 rounded px-3 sm:px-4 py-1 font-semibold bg-white hover:cursor-pointer hover:border-black ml-2 sm:ml-5 mt-2 sm:mt-0">
+                        <button className="border border-neutral-300 rounded px-3 sm:px-4 py-1 font-sans font-semibold bg-white hover:cursor-pointer hover:border-black ml-2 sm:ml-5 mt-2 sm:mt-0">
                             Create an Account
                         </button>
                     </div>

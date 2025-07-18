@@ -85,3 +85,38 @@ export const tokenStorage = {
     return tokens !== null && Date.now() < tokens.expiresAt
   }
 }
+
+// Token renewal function
+export const renewToken = async (credentials: { username: string; password: string }): Promise<AuthTokens | null> => {
+  try {
+    const response = await fetch(AUTH_API.LOGIN, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(credentials)
+    })
+
+    if (!response.ok) {
+      throw new Error('Token renewal failed')
+    }
+
+    const data: LoginResponse = await response.json()
+    
+    if (data.success && data.tokens) {
+      tokenStorage.save(data.tokens)
+      return data.tokens
+    }
+    
+    return null
+  } catch (error) {
+    console.error('Token renewal error:', error)
+    tokenStorage.clear()
+    return null
+  }
+}
+
+// Helper to check if token needs renewal
+export const needsRenewal = (): boolean => {
+  return !tokenStorage.isValid()
+}

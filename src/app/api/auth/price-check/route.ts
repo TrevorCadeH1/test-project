@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
 
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
-      'X-AUTH-TOKEN': 'e89d6c2370505652668abf9cc40194bc'
+      'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!
     }
 
     // Add authorization header if token is provided
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     }
 
     const response = await fetch(
-      'https://wbscdev.wurthbaersupply.com/rest/pricecheck',
+      `${process.env.WURTH_API_BASE_URL}/rest/pricecheck`,
       {
         method: 'POST',
         headers,

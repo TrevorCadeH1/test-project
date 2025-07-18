@@ -14,11 +14,11 @@ export async function GET(request: NextRequest) {
     const token = authHeader.substring(7)
 
     const response = await fetch(
-      'https://wbscdev.wurthbaersupply.com/rest/auth/login-check',
+      `${process.env.WURTH_API_BASE_URL}/rest/auth/login-check`,
       {
         method: 'GET',
         headers: {
-          'X-AUTH-TOKEN': 'e89d6c2370505652668abf9cc40194bc',
+          'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!,
           'Authorization': `Bearer ${token}`
         }
       }

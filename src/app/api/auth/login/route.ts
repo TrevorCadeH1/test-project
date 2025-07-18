@@ -12,12 +12,12 @@ export async function POST(request: NextRequest) {
     }
 
     const response = await fetch(
-      'https://wbscdev.wurthbaersupply.com/rest/auth/login',
+      `${process.env.WURTH_API_BASE_URL}/rest/auth/login`,
       {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'X-AUTH-TOKEN': 'e89d6c2370505652668abf9cc40194bc'
+          'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!
         },
         body: JSON.stringify({
           userName,
@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
         token = tokenMatch[1]
       }
     }
+    
 
     if (!token) {
       return Response.json(
@@ -54,7 +55,7 @@ export async function POST(request: NextRequest) {
 
     const loginData = await response.json()
 
-    return Response.json({
+    const responseWithCookie = Response.json({
       success: true,
       tokens: {
         token,
@@ -62,6 +63,10 @@ export async function POST(request: NextRequest) {
       },
       user: loginData
     })
+
+    responseWithCookie.headers.set('Set-Cookie', `xid_00924=${token}; Path=/; Max-Age=${48 * 60 * 60}; SameSite=Strict`)
+
+    return responseWithCookie
 
   } catch (error) {
     return Response.json(

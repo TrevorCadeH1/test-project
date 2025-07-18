@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react';
-import Header from '../test/header';
-import Footer from '../test/footer';
+import Header from '../home/header';
+import Footer from '../home/footer';
 import Sidebar from './sidebar';
 import { MdOutlineFileDownload } from "react-icons/md";
 
