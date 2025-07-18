@@ -10,11 +10,6 @@ import { RiCustomerServiceLine } from "react-icons/ri";
 import { CiMail } from "react-icons/ci";
 import { FiPhone } from "react-icons/fi";
 
-
-
-
-
-
 export default function FaqPage() {
     const [open, setOpen] = useState<number | false>(false);
 

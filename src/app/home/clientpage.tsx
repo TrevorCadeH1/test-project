@@ -39,7 +39,7 @@ interface ClientPageProps {
   serverPricing: ServerPricingData[] | null
 }
 
-// Fallback pricing - used only if API fails
+// Fallback pricing - used only if API calls fail
 const fallbackPricing: Record<string, { price: string; unit: string }> = {
   "1": { price: "$100", unit: "1000 Each" },
   "2": { price: "$5.14", unit: "Each" },
