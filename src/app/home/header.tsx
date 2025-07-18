@@ -31,7 +31,7 @@ export default function Header() {
                 <div className="hidden md:flex items-center justify-between px-2 py-2">
                     <div
                         className="flex items-center ml-4 cursor-pointer"
-                        onClick={() => router.push('/')}
+                        onClick={() => router.push('/home')}
                     >
                         <img src="/logo.png" alt="Logo" className="h-15 w-auto" />
                     </div>
