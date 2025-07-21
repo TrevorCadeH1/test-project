@@ -1,7 +1,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import {LoginResponse, LoginCheckResponse, tokenStorage } from '@/lib/auth'
+import { LoginResponse, LoginCheckResponse, tokenStorage } from '@/lib/auth'
 
 interface AuthContextType {
   isAuthenticated: boolean
@@ -15,51 +15,32 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-  const [isLoading, setIsLoading] = useState(true)
+export function AuthProvider({
+  children,
+  initialAuth = false
+}: {
+  children: ReactNode
+  initialAuth?: boolean
+}) {
+  const [isAuthenticated, setIsAuthenticated] = useState(initialAuth)
+  const [isLoading, setIsLoading] = useState(!initialAuth)
   const [user, setUser] = useState<any | null>(null)
-  const [token, setToken] = useState<string | null>(null)
+  const [token, setToken] = useState<string | null>(initialAuth ? 'session' : null)
 
   const checkAuthStatus = async () => {
-    const tokens = tokenStorage.load()
-    
-    if (!tokens) {
-      setIsAuthenticated(false)
-      setUser(null)
-      setToken(null)
-      setIsLoading(false)
-      return
-    }
-
     try {
-      const response = await fetch('/api/auth/login-check', {
-        headers: {
-          'Authorization': `Bearer ${tokens.token}`
-        }
-      })
-
-      const data: LoginCheckResponse = await response.json()
-
-      if (data.success && data.status_code === 200) {
+      const response = await fetch('/api/auth/session')
+      const data = await response.json()
+      if (data.authenticated) {
         setIsAuthenticated(true)
-        setToken(tokens.token)
-        const userData = localStorage.getItem('wurth_user_data')
-        if (userData) {
-          setUser(JSON.parse(userData))
-        }
+        setUser(data.user)
+        setToken('session')
       } else {
-        // Token is invalid
-        tokenStorage.clear()
-        localStorage.removeItem('wurth_user_data')
         setIsAuthenticated(false)
         setUser(null)
         setToken(null)
       }
     } catch (error) {
-      console.error('Auth check failed:', error)
-      tokenStorage.clear()
-      localStorage.removeItem('wurth_user_data')
       setIsAuthenticated(false)
       setUser(null)
       setToken(null)
@@ -72,45 +53,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const response = await fetch('/api/auth/login', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userName, password })
       })
-
       const data: LoginResponse = await response.json()
-
-      if (data.success && data.tokens) {
-        tokenStorage.save(data.tokens)
-        setToken(data.tokens.token)
-      
-        if (data.user) {
-          localStorage.setItem('wurth_user_data', JSON.stringify(data.user))
-          setUser(data.user)
-        }
-
+      if (data.success && data.user) {
+        setUser(data.user)
         setIsAuthenticated(true)
         return { success: true }
       } else {
         return { success: false, message: data.message || 'Login failed' }
       }
     } catch (error) {
-      console.error('Login error:', error)
       return { success: false, message: 'Network error occurred' }
     }
   }
 
-  const logout = () => {
-    tokenStorage.clear()
-    localStorage.removeItem('wurth_user_data')
+  const logout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' })
     setIsAuthenticated(false)
     setUser(null)
     setToken(null)
   }
 
   useEffect(() => {
-    checkAuthStatus()
-  }, [])
+    if (!initialAuth) {
+      checkAuthStatus()
+    } else {
+      setIsLoading(false)
+    }
+  }, [initialAuth])
 
   const value: AuthContextType = {
     isAuthenticated,
@@ -122,11 +94,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     checkAuthStatus
   }
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

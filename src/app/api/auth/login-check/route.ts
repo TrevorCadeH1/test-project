@@ -4,14 +4,25 @@ export async function GET(request: NextRequest) {
   try {
     const authHeader = request.headers.get('authorization')
     
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    let token = null
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      token = authHeader.substring(7)
+    } else {
+      const cookieHeader = request.headers.get('cookie')
+      if (cookieHeader) {
+        const match = cookieHeader.match(/xid_00924=([^;]+)/)
+        if (match) {
+          token = match[1]
+        }
+      }
+    }
+
+    if (!token) {
       return Response.json(
         { success: false, status_code: 401, message: 'No valid authorization token provided' },
         { status: 401 }
       )
     }
-
-    const token = authHeader.substring(7)
 
     const response = await fetch(
       `${process.env.WURTH_API_BASE_URL}/rest/auth/login-check`,

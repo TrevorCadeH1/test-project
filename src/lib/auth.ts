@@ -1,4 +1,3 @@
-// Authentication utilities and types
 export interface AuthTokens {
   token: string
   expiresAt: number
@@ -86,7 +85,6 @@ export const tokenStorage = {
   }
 }
 
-// Token renewal function
 export const renewToken = async (credentials: { username: string; password: string }): Promise<AuthTokens | null> => {
   try {
     const response = await fetch(AUTH_API.LOGIN, {

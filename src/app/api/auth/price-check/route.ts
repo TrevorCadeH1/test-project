@@ -16,9 +16,23 @@ export async function POST(request: NextRequest) {
       'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!
     }
 
+    let authToken = token
+    if (token === null) {
+      authToken = null
+    } else if (!authToken) {
+      // Try to get token from cookie
+      const cookieHeader = request.headers.get('cookie')
+      if (cookieHeader) {
+        const match = cookieHeader.match(/xid_00924=([^;]+)/)
+        if (match) {
+          authToken = match[1]
+        }
+      }
+    }
+    
     // Add authorization header if token is provided
-    if (token) {
-      headers['Authorization'] = `Bearer ${token}`
+    if (authToken) {
+      headers['Authorization'] = `Bearer ${authToken}`
     }
 
     const response = await fetch(

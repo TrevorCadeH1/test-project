@@ -52,15 +52,21 @@ const fallbackPricing: Record<string, { price: string; unit: string }> = {
   "9": { price: "$34.25", unit: "Set" }
 }
 
-export default function ClientPage({ serverProducts, serverPricing }: ClientPageProps) {
+export default function ClientPage({ initialAuth, serverProducts, serverPricing }: ClientPageProps) {
     const [currentSlide, setCurrentSlide] = useState(0)
     const [products, setProducts] = useState<Product[]>(serverProducts)
     const blumScrollRef = useRef<HTMLDivElement>(null)
     const DiscountScrollRef = useRef<HTMLDivElement>(null)
     const images = ['/Festool.avif', '/web1.avif', '/web2.avif', '/web3.avif', '/web4.avif']
     
-    const { isAuthenticated } = useAuth()
-    const { prices, isLoading: pricesLoading, fetchPrices } = useProductPrices()
+    const { isAuthenticated, isLoading: authLoading, checkAuthStatus } = useAuth()
+    const { prices, isLoading: pricesLoading, fetchPrices, clearPrices } = useProductPrices()
+
+    useEffect(() => {
+        if (initialAuth && !isAuthenticated) {
+            checkAuthStatus()
+        }
+    }, [initialAuth, isAuthenticated, checkAuthStatus])
 
     const serverPricingMap = React.useMemo(() => {
         if (!serverPricing) return null
@@ -73,22 +79,62 @@ export default function ClientPage({ serverProducts, serverPricing }: ClientPage
 
     // Refetch prices when authentication status changes
     useEffect(() => {
-        if (isAuthenticated && products.length > 0) {
+  const hasServerAuthPricing = initialAuth && serverPricingMap
+  const needsClientAuthPricing = !authLoading && isAuthenticated && !hasServerAuthPricing
+  
+  if (needsClientAuthPricing && products.length > 0) {
+    const priceCheckProducts = products.map(p => ({
+      productid: p.productid!,
+      qty: p.qty!
+    }))
+    fetchPrices(priceCheckProducts)
+    }
+}, [isAuthenticated, authLoading, initialAuth, products, fetchPrices, serverPricingMap])
+
+    // Clear authenticated prices when user logs out
+    useEffect(() => {
+        if (!authLoading && !isAuthenticated) {
+            clearPrices()
+            if (initialAuth && products.length > 0) {
+                const priceCheckProducts = products.map(p => ({
+                    productid: p.productid!,
+                    qty: p.qty!
+                }))
+                fetchPrices(priceCheckProducts)
+            }
+        }
+    }, [isAuthenticated, authLoading, initialAuth, products, fetchPrices, clearPrices])
+    useEffect(() => {
+        const shouldUseAuthPricing = initialAuth || (!authLoading && isAuthenticated)
+        if (shouldUseAuthPricing && products.length > 0) {
+            if (initialAuth && serverPricingMap) {
+                return
+            }
+            
             const priceCheckProducts = products.map(p => ({
                 productid: p.productid!,
                 qty: p.qty!
             }))
             fetchPrices(priceCheckProducts)
         }
-    }, [isAuthenticated, products, fetchPrices])
+    }, [isAuthenticated, authLoading, initialAuth, products, fetchPrices, serverPricingMap])
 
-    // Display price for a product
     const getDisplayPrice = (product: Product) => {
-        if (isAuthenticated && product.productid && prices[product.productid]) {
+        const shouldUseAuthPricing = initialAuth || (!authLoading && isAuthenticated)
+
+        if (!authLoading && !isAuthenticated && product.productid && prices[product.productid]) {
             return prices[product.productid]
         }
         
-        if (!isAuthenticated && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
+        if (initialAuth && shouldUseAuthPricing && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
+            return serverPricingMap[product.productid]
+        }
+        
+        if (shouldUseAuthPricing && product.productid && prices[product.productid]) {
+            return prices[product.productid]
+        }
+        
+        if (serverPricingMap && product.productid && serverPricingMap[product.productid]) {
             return serverPricingMap[product.productid]
         }
         
@@ -100,11 +146,13 @@ export default function ClientPage({ serverProducts, serverPricing }: ClientPage
         }
     }
 
-    // Function to render pricing rows
     const renderPricingRows = (displayPrice: any, product: Product, pricesLoading: boolean) => {
         const showFullPriceRow = displayPrice.full_price && displayPrice.qty && displayPrice.qty > 1
-
-        const showLoadingState = isAuthenticated && pricesLoading && product.productid && !prices[product.productid]
+        
+        const hasExistingPricing = (initialAuth && serverPricingMap?.[product.productid!]) || 
+                                  prices[product.productid!]
+        const showLoadingState = !hasExistingPricing && pricesLoading && product.productid
+        
         return (
             <div className="flex flex-col items- w-full text-left">
                 {/* Pricing Rows */}

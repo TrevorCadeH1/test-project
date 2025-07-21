@@ -56,14 +56,10 @@ export async function POST(request: NextRequest) {
 
     const responseWithCookie = Response.json({
       success: true,
-      tokens: {
-        token,
-        expiresAt
-      },
       user: loginData
     })
 
-    responseWithCookie.headers.set('Set-Cookie', `xid_00924=${token}; Path=/; Max-Age=${48 * 60 * 60}; SameSite=Strict`)
+    responseWithCookie.headers.set('Set-Cookie', `xid_00924=${token}; Path=/; Max-Age=${48 * 60 * 60}; HttpOnly; Secure; SameSite=Strict`)
 
     return responseWithCookie
 

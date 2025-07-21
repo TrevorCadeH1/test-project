@@ -33,7 +33,6 @@ export function useProductPrices(): UseProductPricesReturn {
     setError(null)
 
     try {
-      // Use token from auth context
       const response = await fetch('/api/auth/price-check', {
         method: 'POST',
         headers: {
@@ -48,7 +47,6 @@ export function useProductPrices(): UseProductPricesReturn {
       const data: PriceCheckResponse = await response.json()
 
       if (data.success && data.prices) {
-        // Convert array to objects by productid
         const priceMap = data.prices.reduce((acc, price) => {
           acc[price.productid] = price
           return acc
