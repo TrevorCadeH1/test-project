@@ -71,7 +71,7 @@ async function getServerSideProducts(): Promise<Product[]> {
 
         return {
           id: item.id?.toString() || `product-${idx}`,
-          name: item.item_name || `Product ${idx + 1}`, 
+          name: item.item_name || `Product ${idx + 1}`,
           manufacturerNumber: item.txt_wurth_lac_item || `MFG-${idx + 1}`,
           imageUrl: item.img || '/wswu1.png',
           price,
@@ -186,7 +186,6 @@ export default async function Page() {
   
   // Fetch products on server-side
   const serverProducts = await getServerSideProducts()
-
   
   let serverPricing: ServerPricingData[] | null = null
   if (serverProducts.length > 0) {

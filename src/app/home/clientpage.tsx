@@ -84,17 +84,14 @@ export default function ClientPage({ serverProducts, serverPricing }: ClientPage
 
     // Display price for a product
     const getDisplayPrice = (product: Product) => {
-        // If authenticated and we have client-side pricing
         if (isAuthenticated && product.productid && prices[product.productid]) {
             return prices[product.productid]
         }
         
-        // If not authenticated, check server-side pricing
         if (!isAuthenticated && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
             return serverPricingMap[product.productid]
         }
         
-        // Fall back to the product's default pricing
         return {
             price: product.price,
             unit: product.unit,
@@ -105,12 +102,9 @@ export default function ClientPage({ serverProducts, serverPricing }: ClientPage
 
     // Function to render pricing rows
     const renderPricingRows = (displayPrice: any, product: Product, pricesLoading: boolean) => {
-        const showFullPriceRow = displayPrice.full_price && 
-                                displayPrice.qty && 
-                                displayPrice.qty > 1
+        const showFullPriceRow = displayPrice.full_price && displayPrice.qty && displayPrice.qty > 1
 
         const showLoadingState = isAuthenticated && pricesLoading && product.productid && !prices[product.productid]
-
         return (
             <div className="flex flex-col items- w-full text-left">
                 {/* Pricing Rows */}

@@ -3,8 +3,9 @@
 import React from 'react'
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext'
-import { FaRegUserCircle } from "react-icons/fa";
+import { HiOutlineUserCircle } from "react-icons/hi2";
 import { RxExit } from "react-icons/rx";
+
 
 
 export default function AuthButton() {
@@ -40,7 +41,7 @@ export default function AuthButton() {
       onClick={() => router.push('/signin')}
       className="flex items-center space-x-1 px-4 py-2 mr-4 bg-white text-black font-sans rounded hover:cursor-pointer transition-colors text-lg font-medium"
     >
-      <FaRegUserCircle className="text-black" size={24} />
+      <HiOutlineUserCircle className="text-black mt-0.5" size={30} />
       <span className="ml-1">Sign in / Register</span>
     </button>
     </>

@@ -50,7 +50,6 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       )
     }
-
     const expiresAt = Date.now() + (48 * 60 * 60 * 1000)
 
     const loginData = await response.json()
