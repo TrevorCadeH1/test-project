@@ -111,7 +111,6 @@ async function getServerSidePricing(products: { productid: string; qty: number }
       'X-AUTH-TOKEN': process.env.WURTH_API_TOKEN!
     }
 
-    // Add authorization header if user is authenticated
     if (authToken) {
       headers['Authorization'] = `Bearer ${authToken}`
     }
@@ -186,12 +185,20 @@ export default async function Page() {
   const serverProducts = await getServerSideProducts()
 
   let serverPricing: ServerPricingData[] | null = null
+  let guestPricing: ServerPricingData[] | null = null
+  
   if (serverProducts.length > 0) {
     const priceCheckProducts = serverProducts.map(p => ({
       productid: p.productid!,
       qty: p.qty!
     }))
-    serverPricing = await getServerSidePricing(priceCheckProducts, authResult.token)
+    
+    if (authResult.isAuth) {
+      serverPricing = await getServerSidePricing(priceCheckProducts, authResult.token)
+      guestPricing = await getServerSidePricing(priceCheckProducts)
+    } else {
+      guestPricing = await getServerSidePricing(priceCheckProducts)
+    }
   }
 
   return (
@@ -199,6 +206,7 @@ export default async function Page() {
         initialAuth={authResult.isAuth}
         serverProducts={serverProducts}
         serverPricing={serverPricing}
+        guestPricing={guestPricing}
       />
   )
 }

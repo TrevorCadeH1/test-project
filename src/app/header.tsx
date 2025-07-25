@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 import AuthButton from '@/components/AuthButton';
+import { useAuth } from '@/contexts/AuthContext';
 import { IoIosArrowDown } from "react-icons/io";
 import { FiPhone } from "react-icons/fi";
 import { AiOutlineShop } from "react-icons/ai";
@@ -54,6 +55,7 @@ const categoryItems = [
 
 export default function Header() {
     const router = useRouter();
+    const { isAuthenticated, logout } = useAuth();
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
     const [activeCategoryDropdown, setActiveCategoryDropdown] = useState(false);
     const dropdownRefs = useRef<{ [key: string]: HTMLDivElement | null }>({});
@@ -88,7 +90,7 @@ export default function Header() {
 
     return(
         <div className ="responsive-max-width">
-            <div className="bg-neutral-50 flex flex-col md:flex-row items-start md:items-center justify-between px-4 py-2 gap-2 md:gap-0">
+            <div className="bg-sky-50/40 flex flex-col md:flex-row items-start md:items-center justify-between px-4 py-2 gap-2 md:gap-0">
                 <div className="flex flex-col md:flex-row items-start md:items-center space-y-1 md:space-y-0 md:space-x-2">
                     <span
                         className="text-black font-sans ml-2 text-md hover:cursor-pointer"
@@ -166,18 +168,19 @@ export default function Header() {
                 </div>
             </div>
             <div className="hidden md:block bg-red-700 px-2 md:px-0 py-2 relative">
-                <div className="flex items-center justify-start md:ml-10 space-x-4">
-                    {[
-                        "All products",
-                        "Quick Order",
-                        "Quotes",
-                        "Promotions",
-                        "Resource Center",
-                        "Digital Tools",
-                        "Careers",
-                        "Help",
-                        "Contact"
-                    ].map((label) => (
+                <div className="flex items-center justify-between md:ml-10">
+                    <div className="flex items-center space-x-4">
+                        {[
+                            "All products",
+                            "Quick Order",
+                            "Quotes",
+                            "Promotions",
+                            "Resource Center",
+                            "Digital Tools",
+                            "Careers",
+                            "Help",
+                            "Contact"
+                        ].map((label) => (
                         <div 
                             key={label} 
                             className="relative"
@@ -259,6 +262,19 @@ export default function Header() {
                             )}
                         </div>
                     ))}
+                    </div>
+                    
+                    {/* My Account Button - Only show when authenticated */}
+                    {isAuthenticated && (
+                        <div className="mr-10">
+                            <button
+                                onClick={() => router.push('/myaccount')}
+                                className="text-white font-sans font-semibold text-xs md:text-[0.9rem] px-3 py-1 rounded transition-colors hover:bg-red-600/70 hover:cursor-pointer"
+                            >
+                                My Account
+                            </button>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className="bg-green-blend px-2 md:px-4 py-2.5">

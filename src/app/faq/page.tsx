@@ -1,8 +1,6 @@
 'use client'
 
 import React, { useState } from 'react';
-import Header from '../home/header';
-import Footer from '../home/footer';
 import { CiAt } from "react-icons/ci";
 import { FaComputer } from "react-icons/fa6";
 import { GrWheelchair } from "react-icons/gr";
@@ -15,7 +13,6 @@ export default function FaqPage() {
 
     return (
         <div className="responsive-max-width min-h-screen flex flex-col">
-            <Header />
 
             {/* Frequently Asked Questions (FAQ) Section */}
             <div className="flex flex-col justify-center text-center text-3xl sm:text-4xl font-semibold mt-10 sm:mt-15 text-black">
@@ -276,7 +273,6 @@ export default function FaqPage() {
                 </div>
                 )})}
             </div>
-            <Footer />
         </div>
     )
 }

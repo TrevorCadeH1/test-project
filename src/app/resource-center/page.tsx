@@ -1,8 +1,6 @@
 'use client'
 
 import React from 'react';
-import Header from '../home/header';
-import Footer from '../home/footer';
 import Sidebar from './sidebar';
 import { MdOutlineFileDownload } from "react-icons/md";
 
@@ -10,7 +8,6 @@ import { MdOutlineFileDownload } from "react-icons/md";
 export default function ResourceCenterPage() {
     return (
         <div className="responsive-max-width min-h-screen flex flex-col">
-            <Header />
 
             <div className="flex flex-1 flex-col sm:flex-row">
                 <div className="sm:w-auto w-full flex justify-center sm:justify-start">
@@ -1113,7 +1110,6 @@ export default function ResourceCenterPage() {
 
             <div className="mt-10">
             </div>
-            <Footer />
         </div>
     )
 }

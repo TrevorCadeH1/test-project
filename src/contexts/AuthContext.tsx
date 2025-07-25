@@ -1,6 +1,8 @@
 'use client'
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+import React, { createContext, useContext, ReactNode } from 'react'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { LoginResponse, LoginCheckResponse, tokenStorage } from '@/lib/auth'
 
 interface AuthContextType {
@@ -10,7 +12,36 @@ interface AuthContextType {
   token: string | null
   login: (userName: string, password: string) => Promise<LoginResponse>
   logout: () => void
-  checkAuthStatus: () => Promise<void>
+  checkAuthStatus: () => void
+}
+
+const checkAuthStatus = async (): Promise<{ authenticated: boolean; user: any | null }> => {
+  const response = await fetch('/api/auth/session')
+  if (!response.ok) {
+    throw new Error('Auth check failed')
+  }
+  return response.json()
+}
+
+const loginUser = async ({ userName, password }: { userName: string; password: string }): Promise<LoginResponse> => {
+  const response = await fetch('/api/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userName, password })
+  })
+  
+  if (!response.ok) {
+    throw new Error('Login request failed')
+  }
+  
+  return response.json()
+}
+
+const logoutUser = async (): Promise<void> => {
+  const response = await fetch('/api/auth/logout', { method: 'POST' })
+  if (!response.ok) {
+    throw new Error('Logout failed')
+  }
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
@@ -22,76 +53,81 @@ export function AuthProvider({
   children: ReactNode
   initialAuth?: boolean
 }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(initialAuth)
-  const [isLoading, setIsLoading] = useState(!initialAuth)
-  const [user, setUser] = useState<any | null>(null)
-  const [token, setToken] = useState<string | null>(initialAuth ? 'session' : null)
+  const queryClient = useQueryClient()
+  const router = useRouter()
 
-  const checkAuthStatus = async () => {
-    try {
-      const response = await fetch('/api/auth/session')
-      const data = await response.json()
-      if (data.authenticated) {
-        setIsAuthenticated(true)
-        setUser(data.user)
-        setToken('session')
-      } else {
-        setIsAuthenticated(false)
-        setUser(null)
-        setToken(null)
+  // Query for authorization status
+  const {
+    data: authData,
+    isLoading,
+    refetch
+  } = useQuery({
+    queryKey: ['authStatus'],
+    queryFn: checkAuthStatus,
+    retry: 1,
+    staleTime: 1000 * 60 * 10,
+    gcTime: 1000 * 60 * 30,
+    initialData: initialAuth ? { authenticated: true, user: null } : undefined,
+  })
+
+  const loginMutation = useMutation({
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      if (data.success) {
+        queryClient.invalidateQueries({ queryKey: ['authStatus'] })
+        queryClient.invalidateQueries({ queryKey: ['productPrices'] })
       }
-    } catch (error) {
-      setIsAuthenticated(false)
-      setUser(null)
-      setToken(null)
-    } finally {
-      setIsLoading(false)
+    },
+  })
+
+  const logoutMutation = useMutation({
+    mutationFn: logoutUser,
+    onMutate: () => {
+      queryClient.setQueryData(['authStatus'], { authenticated: false, user: null })
+      queryClient.clear()
+    },
+    onSuccess: () => {
+      // Clear all queries to force fresh data
+      queryClient.clear()
+      // Redirect to home page after successful logout
+      router.push('/home')
+    },
+    onError: () => {
+      queryClient.setQueryData(['authStatus'], { authenticated: false, user: null })
+      queryClient.clear()
+      router.push('/home')
     }
-  }
+  })
 
   const login = async (userName: string, password: string): Promise<LoginResponse> => {
     try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ userName, password })
-      })
-      const data: LoginResponse = await response.json()
-      if (data.success && data.user) {
-        setUser(data.user)
-        setIsAuthenticated(true)
-        return { success: true }
-      } else {
-        return { success: false, message: data.message || 'Login failed' }
-      }
+      const result = await loginMutation.mutateAsync({ userName, password })
+      return result
     } catch (error) {
       return { success: false, message: 'Network error occurred' }
     }
   }
 
   const logout = async () => {
-    await fetch('/api/auth/logout', { method: 'POST' })
-    setIsAuthenticated(false)
-    setUser(null)
-    setToken(null)
+    try {
+      await logoutMutation.mutateAsync()
+    } catch (error) {
+      console.error('Logout error:', error)
+    }
   }
 
-  useEffect(() => {
-    if (!initialAuth) {
-      checkAuthStatus()
-    } else {
-      setIsLoading(false)
-    }
-  }, [initialAuth])
+  const handleCheckAuthStatus = () => {
+    refetch()
+  }
 
   const value: AuthContextType = {
-    isAuthenticated,
+    isAuthenticated: authData?.authenticated || false,
     isLoading,
-    user,
-    token,
+    user: authData?.user || null,
+    token: authData?.authenticated ? 'session' : null,
     login,
     logout,
-    checkAuthStatus
+    checkAuthStatus: handleCheckAuthStatus
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

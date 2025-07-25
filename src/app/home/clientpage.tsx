@@ -1,14 +1,12 @@
 'use client'
 
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useRef, useMemo } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import SimpleCarousel from "./carousel"
 import { IoIosArrowRoundForward } from "react-icons/io"
 import { FiDownload } from "react-icons/fi"
 import { MdFavoriteBorder } from "react-icons/md"
-import Footer from "./footer"
-import Header from "./header"
 import { IoIosArrowBack } from "react-icons/io";
 import { IoIosArrowForward } from "react-icons/io";
 import { useAuth } from '@/contexts/AuthContext'
@@ -37,38 +35,45 @@ interface ClientPageProps {
   initialAuth: boolean
   serverProducts: Product[]
   serverPricing: ServerPricingData[] | null
+  guestPricing: ServerPricingData[] | null
 }
 
-// Fallback pricing - used only if API calls fail
-const fallbackPricing: Record<string, { price: string; unit: string }> = {
-  "1": { price: "$100", unit: "1000 Each" },
-  "2": { price: "$5.14", unit: "Each" },
-  "3": { price: "$11.85", unit: "Each" },
-  "4": { price: "$50", unit: "1000 Each" },
-  "5": { price: "$36.56", unit: "Set" },
-  "6": { price: "$11.12", unit: "Each" },
-  "7": { price: "$54.33", unit: "Set" },
-  "8": { price: "$52.13", unit: "Set" },
-  "9": { price: "$34.25", unit: "Set" }
-}
-
-export default function ClientPage({ initialAuth, serverProducts, serverPricing }: ClientPageProps) {
+export default function ClientPage({ initialAuth, serverProducts, serverPricing, guestPricing }: ClientPageProps) {
     const [currentSlide, setCurrentSlide] = useState(0)
-    const [products, setProducts] = useState<Product[]>(serverProducts)
+    const [products] = useState<Product[]>(serverProducts)
     const blumScrollRef = useRef<HTMLDivElement>(null)
     const DiscountScrollRef = useRef<HTMLDivElement>(null)
     const images = ['/Festool.avif', '/web1.avif', '/web2.avif', '/web3.avif', '/web4.avif']
     
-    const { isAuthenticated, isLoading: authLoading, checkAuthStatus } = useAuth()
-    const { prices, isLoading: pricesLoading, fetchPrices, clearPrices } = useProductPrices()
+    const { isAuthenticated, isLoading: authLoading } = useAuth()
 
-    useEffect(() => {
-        if (initialAuth && !isAuthenticated) {
-            checkAuthStatus()
-        }
-    }, [initialAuth, isAuthenticated, checkAuthStatus])
+    const priceCheckProducts = useMemo(() => {
+        return products.map(p => ({
+            productid: p.productid!,
+            qty: p.qty!
+        }))
+    }, [products])
 
-    const serverPricingMap = React.useMemo(() => {
+    // Determine when to fetch prices
+    const shouldFetchPrices = useMemo(() => {
+        if (authLoading) return false
+        
+        const hasCorrectServerPricing = isAuthenticated 
+            ? serverPricing 
+            : guestPricing
+        
+        const needsClientPricing = !hasCorrectServerPricing
+        
+        return needsClientPricing
+    }, [isAuthenticated, authLoading, serverPricing, guestPricing])
+
+    const { 
+        prices, 
+        isLoading: pricesLoading, 
+        error: pricesError 
+    } = useProductPrices(priceCheckProducts, shouldFetchPrices)
+
+    const serverPricingMap = useMemo(() => {
         if (!serverPricing) return null
         const map: Record<string, ServerPricingData> = {}
         serverPricing.forEach(item => {
@@ -77,65 +82,40 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
         return map
     }, [serverPricing])
 
-    // Refetch prices when authentication status changes
-    useEffect(() => {
-  const hasServerAuthPricing = initialAuth && serverPricingMap
-  const needsClientAuthPricing = !authLoading && isAuthenticated && !hasServerAuthPricing
-  
-  if (needsClientAuthPricing && products.length > 0) {
-    const priceCheckProducts = products.map(p => ({
-      productid: p.productid!,
-      qty: p.qty!
-    }))
-    fetchPrices(priceCheckProducts)
-    }
-}, [isAuthenticated, authLoading, initialAuth, products, fetchPrices, serverPricingMap])
-
-    // Clear authenticated prices when user logs out
-    useEffect(() => {
-        if (!authLoading && !isAuthenticated) {
-            clearPrices()
-            if (initialAuth && products.length > 0) {
-                const priceCheckProducts = products.map(p => ({
-                    productid: p.productid!,
-                    qty: p.qty!
-                }))
-                fetchPrices(priceCheckProducts)
-            }
-        }
-    }, [isAuthenticated, authLoading, initialAuth, products, fetchPrices, clearPrices])
-    useEffect(() => {
-        const shouldUseAuthPricing = initialAuth || (!authLoading && isAuthenticated)
-        if (shouldUseAuthPricing && products.length > 0) {
-            if (initialAuth && serverPricingMap) {
-                return
-            }
-            
-            const priceCheckProducts = products.map(p => ({
-                productid: p.productid!,
-                qty: p.qty!
-            }))
-            fetchPrices(priceCheckProducts)
-        }
-    }, [isAuthenticated, authLoading, initialAuth, products, fetchPrices, serverPricingMap])
+    const guestPricingMap = useMemo(() => {
+        if (!guestPricing) return null
+        const map: Record<string, ServerPricingData> = {}
+        guestPricing.forEach(item => {
+            map[item.productid] = item
+        })
+        return map
+    }, [guestPricing])
 
     const getDisplayPrice = (product: Product) => {
-        const shouldUseAuthPricing = initialAuth || (!authLoading && isAuthenticated)
-
-        if (!authLoading && !isAuthenticated && product.productid && prices[product.productid]) {
-            return prices[product.productid]
+        
+        // For currently logged out users - use server guest pricing if available
+        if (!authLoading && !isAuthenticated && guestPricingMap && product.productid && guestPricingMap[product.productid]) {
+            return guestPricingMap[product.productid]
         }
         
-        if (initialAuth && shouldUseAuthPricing && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
+        // For currently authenticated users - use server auth pricing if available
+        if (!authLoading && isAuthenticated && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
             return serverPricingMap[product.productid]
         }
         
-        if (shouldUseAuthPricing && product.productid && prices[product.productid]) {
+        // Fall back to client-side pricing if server pricing not available for current auth state
+        if (!authLoading && product.productid && prices[product.productid]) {
             return prices[product.productid]
         }
         
-        if (serverPricingMap && product.productid && serverPricingMap[product.productid]) {
-            return serverPricingMap[product.productid]
+        // While auth is loading, use server pricing based on initial state
+        if (authLoading) {
+            if (!initialAuth && guestPricingMap && product.productid && guestPricingMap[product.productid]) {
+                return guestPricingMap[product.productid]
+            }
+            if (initialAuth && serverPricingMap && product.productid && serverPricingMap[product.productid]) {
+                return serverPricingMap[product.productid]
+            }
         }
         
         return {
@@ -146,21 +126,32 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
         }
     }
 
-    const renderPricingRows = (displayPrice: any, product: Product, pricesLoading: boolean) => {
+    const renderPricingRows = (displayPrice: any, product: Product) => {
         const showFullPriceRow = displayPrice.full_price && displayPrice.qty && displayPrice.qty > 1
-        
-        const hasExistingPricing = (initialAuth && serverPricingMap?.[product.productid!]) || 
-                                  prices[product.productid!]
-        const showLoadingState = !hasExistingPricing && pricesLoading && product.productid
-        
+        const hasCorrectServerPricing = (!authLoading && !isAuthenticated && guestPricingMap?.[product.productid!]) ||
+                                       (!authLoading && isAuthenticated && serverPricingMap?.[product.productid!])
+        const hasClientPricing = prices[product.productid!]
+        const showLoadingState = pricesLoading && product.productid && !hasCorrectServerPricing && !hasClientPricing
+        const showUpdatingState = pricesLoading && product.productid && (hasCorrectServerPricing || hasClientPricing)
+        const showErrorState = pricesError && !hasCorrectServerPricing && !hasClientPricing && product.productid
+
         return (
             <div className="flex flex-col items- w-full text-left">
+                {showErrorState && (
+                    <span className="text-red-500 text-xs mb-1">
+                        Failed to load pricing
+                    </span>
+                )}
+                
                 {/* Pricing Rows */}
                 <span className="text-black font-light text-base md:text-lg min-h-[1.5rem]">
                     {showFullPriceRow ? (
                         <>
                             {displayPrice.full_price} / {displayPrice.qty} {displayPrice.unit}
                             {showLoadingState && (
+                                <span className="ml-2 text-xs text-gray-500">(loading...)</span>
+                            )}
+                            {showUpdatingState && (
                                 <span className="ml-2 text-xs text-gray-500">(updating...)</span>
                             )}
                         </>
@@ -172,6 +163,9 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
                 <span className="text-black font-light text-base md:text-lg">
                     {displayPrice.price} / {displayPrice.unit}
                     {!showFullPriceRow && showLoadingState && (
+                        <span className="ml-2 text-xs text-gray-500">(loading...)</span>
+                    )}
+                    {!showFullPriceRow && showUpdatingState && (
                         <span className="ml-2 text-xs text-gray-500">(updating...)</span>
                     )}
                 </span>
@@ -181,8 +175,6 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
 
     return (
         <div className="responsive-max-width">
-            {/* Header Section */}
-            <Header />
             <div className="bg-gradient-to-t from-stone-900 to-amber-900 p-2 md:pb-1 md:pl-6 md:pr-6 md:pt-4">
         
             {/* First Row: Carousel Section */}
@@ -315,7 +307,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
                     <div className="text-neutral-500 text-xs md:text-sm text-left w-full">
                         {p.manufacturerNumber}
                     </div>
-                    {renderPricingRows(displayPrice, p, pricesLoading)}
+                    {renderPricingRows(displayPrice, p)}
                     <button className="w-full bg-black text-white py-2 rounded font-semibold mt-2 mb-2 hover:cursor-pointer hover:bg-black/80 transition text-sm print:hidden">
                         Add to cart
                     </button>
@@ -426,7 +418,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
                 <div className="text-neutral-500 text-xs md:text-sm text-left w-full">
                     {p.manufacturerNumber}
                 </div>
-                {renderPricingRows(displayPrice, p, pricesLoading)}
+                {renderPricingRows(displayPrice, p)}
                 <button className="w-full bg-black text-white py-2 rounded font-semibold mt-2 mb-2 hover:bg-black/80 transition text-sm print:hidden">
                     Add to cart
                 </button>
@@ -696,9 +688,6 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing 
                 </div>
             </div>
         </div>
-
-        {/* Seventh Row: Footer Section */}
-        <Footer />
         </div>
     )
 }

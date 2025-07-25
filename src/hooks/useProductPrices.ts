@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useAuth } from '@/contexts/AuthContext'
 import { PriceCheckResponse } from '@/lib/auth'
 
@@ -12,68 +12,85 @@ export interface ProductPriceData {
   qty?: number
 }
 
-export interface UseProductPricesReturn {
-  prices: Record<string, ProductPriceData>
-  isLoading: boolean
-  error: string | null
-  fetchPrices: (products: { productid: string; qty: number }[]) => Promise<void>
-  clearPrices: () => void
+type PriceCheckProduct = {
+  productid: string
+  qty: number
 }
 
-export function useProductPrices(): UseProductPricesReturn {
-  const [prices, setPrices] = useState<Record<string, ProductPriceData>>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
-  const { isAuthenticated, token } = useAuth()
+const fetchProductPrices = async (
+  products: PriceCheckProduct[], 
+  token: string | null
+): Promise<Record<string, ProductPriceData>> => {
+  const response = await fetch('/api/auth/price-check', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      products,
+      token
+    })
+  })
 
-  const fetchPrices = useCallback(async (products: { productid: string; qty: number }[]) => {
-    if (!products.length) return
+  if (!response.ok) {
+    throw new Error('Failed to fetch prices')
+  }
 
-    setIsLoading(true)
-    setError(null)
+  const data: PriceCheckResponse = await response.json()
+  
+  if (!data.success) {
+    throw new Error(data.message || 'Failed to fetch prices')
+  }
 
-    try {
-      const response = await fetch('/api/auth/price-check', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          products,
-          token: isAuthenticated ? token : null
-        })
-      })
+  if (!data.prices) {
+    throw new Error('No price data received')
+  }
 
-      const data: PriceCheckResponse = await response.json()
+  const pricesMap: Record<string, ProductPriceData> = {}
+  data.prices.forEach((item: ProductPriceData) => {
+    pricesMap[item.productid] = item
+  })
+  
+  return pricesMap
+}
 
-      if (data.success && data.prices) {
-        const priceMap = data.prices.reduce((acc, price) => {
-          acc[price.productid] = price
-          return acc
-        }, {} as Record<string, ProductPriceData>)
+export const useProductPrices = (products: PriceCheckProduct[], enabled = true) => {
+  const queryClient = useQueryClient()
+  const { token, isAuthenticated } = useAuth()
+  const queryKey = ['productPrices', JSON.stringify(products), token || 'guest', isAuthenticated]
+  
+  const {
+    data: prices = {},
+    isLoading,
+    error,
+    refetch,
+  } = useQuery({
+    queryKey,
+    queryFn: () => {
+      console.log('Fetching prices with token:', token, 'authenticated:', isAuthenticated)
+      return fetchProductPrices(products, token)
+    },
+    enabled: enabled && products.length > 0,
+    staleTime: 1000 * 60 * 5, // 5 minutes - prevent unnecessary refetches for pricing data
+    gcTime: 1000 * 60 * 15, // 15 minutes - keep pricing data cached longer
+    retry: 2,
+  })
 
-        setPrices(prev => ({ ...prev, ...priceMap }))
-      } else {
-        setError(data.message || 'Failed to fetch prices')
-      }
-    } catch (err) {
-      console.error('Price fetch error:', err)
-      setError('Network error occurred while fetching prices')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [isAuthenticated, token])
+  const clearPrices = () => {
+    queryClient.removeQueries({ queryKey: ['productPrices'] })
+  }
 
-  const clearPrices = useCallback(() => {
-    setPrices({})
-    setError(null)
-  }, [])
+  const fetchPrices = (newProducts: PriceCheckProduct[]) => {
+    const newQueryKey = ['productPrices', JSON.stringify(newProducts), token || 'guest', isAuthenticated]
+    queryClient.invalidateQueries({ queryKey: newQueryKey })
+  }
 
   return {
     prices,
     isLoading,
-    error,
+    error: error?.message || null,
+    refetch,
+    clearPrices,
     fetchPrices,
-    clearPrices
   }
 }

@@ -1,14 +1,11 @@
 'use client'
 
 import React from 'react';
-import Header from '../../home/header';
-import Footer from '../../home/footer';
 import Sidebar from '../sidebar';
 
 export default function VideoLibraryPage() {
     return(
         <div className="responsive-max-width min-h-screen flex flex-col">
-            <Header />
             
             <div className="sm:w-auto w-full flex justify-center sm:justify-start">
                 <Sidebar />
@@ -402,7 +399,6 @@ export default function VideoLibraryPage() {
                     </div>
                 </div>
             </div>
-            <Footer />
         </div>
     )
 }

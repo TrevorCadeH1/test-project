@@ -1,8 +1,6 @@
 'use client'
 
 import React from 'react';
-import Header from '../home/header';
-import Footer from '../home/footer';
 import Link from 'next/link';
 import { MdOutlineContactPhone } from "react-icons/md";
 import { CiAt } from "react-icons/ci";
@@ -12,7 +10,6 @@ import { HiOutlineBuildingOffice2 } from "react-icons/hi2";
 export default function HelpPage() {
     return (
         <div className="responsive-max-width min-h-screen flex flex-col">
-            <Header />
 
             {/* Introduction Section */}
             <div className="flex flex-col justify-center text-center text-4xl font-semibold mt-15 text-black">
@@ -208,7 +205,6 @@ export default function HelpPage() {
             <div className="mt-10">
 
             </div>
-            <Footer />
         </div>
     )
 }
