@@ -143,9 +143,9 @@ async function getServerSidePricing(products: { productid: string; qty: number }
 
         return {
           productid,
-          price: `$${(qty > 1 ? unitPrice : totalPrice).toFixed(2)}`,
+          price: `$${(qty > 1 ? Number(unitPrice).toFixed(3) : Number(totalPrice).toFixed(3))}`,
           unit: item.price_unit,
-          full_price: qty > 1 ? `$${totalPrice.toFixed(2)}` : undefined,
+          full_price: qty > 1 ? `$${Number(totalPrice).toFixed(2)}` : undefined,
           qty
         }
       })
