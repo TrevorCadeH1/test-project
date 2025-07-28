@@ -312,7 +312,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing,
                         Add to cart
                     </button>
                     <div className="flex items-center justify-between w-full print:hidden">
-                        <button className="w-[130px] md:w-[170px] border border-neutral-300 text-black py-2 rounded flex items-center justify-center hover:bg-neutral-100 transition text-xs md:text-sm">
+                        <button className="w-[130px] md:w-[170px] border border-neutral-300 text-black py-2 rounded flex items-center justify-center hover:cursor-pointer hover:bg-neutral-100 transition text-xs md:text-sm">
                         Add to proposal
                         </button>
                         <button>
@@ -419,11 +419,11 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing,
                     {p.manufacturerNumber}
                 </div>
                 {renderPricingRows(displayPrice, p)}
-                <button className="w-full bg-black text-white py-2 rounded font-semibold mt-2 mb-2 hover:bg-black/80 transition text-sm print:hidden">
+                <button className="w-full bg-black text-white py-2 rounded font-semibold mt-2 mb-2 hover:cursor-pointer hover:bg-black/80 transition text-sm print:hidden">
                     Add to cart
                 </button>
                 <div className="flex items-center justify-between w-full print:hidden">
-                    <button className="w-[130px] md:w-[170px] border border-neutral-300 text-black py-2 rounded flex items-center justify-center hover:bg-neutral-100 transition text-xs md:text-sm">
+                    <button className="w-[130px] md:w-[170px] border border-neutral-300 text-black py-2 rounded flex items-center justify-center hover:cursor-pointer hover:bg-neutral-100 transition text-xs md:text-sm">
                     Add to proposal
                     </button>
                     <button>
