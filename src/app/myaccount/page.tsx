@@ -66,8 +66,8 @@ export default function MyAccountPage() {
             setProfileData({
                 name: user?.name || '',
                 email: user?.email || '',
-                phone: '',
-                company: ''
+                phone: user?.phone || '',
+                company: user?.company || ''
             });
         }
         setIsEditing(false);

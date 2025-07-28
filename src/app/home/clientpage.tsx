@@ -262,7 +262,7 @@ export default function ClientPage({ initialAuth, serverProducts, serverPricing,
             <div className="relative mt-4 md:mt-8 pl-2 md:pl-10 pr-2 md:pr-8">
             <button
                 type="button"
-                className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-200 transition disabled:opacity-30 print:hidden"
+                className="hidden md:block absolute left-0 top-1/2 ml-1 -translate-y-1/2 z-10 bg-white/80 hover:cursor-pointer hover:bg-white hover:border-black shadow rounded-full p-2 border border-neutral-200 transition disabled:opacity-30 print:hidden"
                 onClick={() => DiscountScrollRef.current?.scrollBy({ left: -300, behavior: 'smooth' })}
             >
                 <IoIosArrowBack className ="w-[25px] h-[25px]"/>
