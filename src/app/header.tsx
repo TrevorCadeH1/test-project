@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
+import axios from 'axios';
 import AuthButton from '@/components/AuthButton';
 import { useAuth } from '@/contexts/AuthContext';
 import { IoIosArrowDown } from "react-icons/io";
@@ -82,11 +83,51 @@ export default function Header() {
         };
     }, [activeDropdown, activeCategoryDropdown]);
 
+    const [searchTerm, setSearchTerm] = useState('');
+    const [searchResults, setSearchResults] = useState<any[]>([]);
+    const [showResults, setShowResults] = useState(false);
+    const searchInputRef = useRef<HTMLInputElement | null>(null);
+    const searchResultsRef = useRef<HTMLDivElement | null>(null);
+
     const handleDropdownClick = (label: string) => {
         if (dropdownInfo[label as keyof typeof dropdownInfo]) {
             setActiveDropdown(activeDropdown === label ? null : label);
         }
     };
+
+    const handleSearch = async (e?: React.FormEvent | React.MouseEvent) => {
+        if (e) e.preventDefault();
+        if (!searchTerm.trim()) return;
+        try {
+            const res = await axios.get('https://nodetest-b90d.onrender.com/api/products/search', {
+                params: { q: searchTerm }
+            });
+            setSearchResults(res.data.results);
+            setShowResults(true);
+        } catch (err) {
+            console.error("Search error:", err);
+            setSearchResults([]);
+            setShowResults(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!showResults) return;
+        const handleClick = (e: MouseEvent) => {
+            if (
+                searchResultsRef.current &&
+                !searchResultsRef.current.contains(e.target as Node) &&
+                searchInputRef.current &&
+                !searchInputRef.current.contains(e.target as Node)
+            ) {
+                setShowResults(false);
+            }
+        };
+        document.addEventListener('mousedown', handleClick);
+        return () => {
+            document.removeEventListener('mousedown', handleClick);
+        };
+    }, [showResults]);
 
     return(
         <div className ="responsive-max-width">
@@ -116,20 +157,51 @@ export default function Header() {
                     >
                         <img src="/logo.png" alt="Logo" className="h-15 w-auto" />
                     </div>
-                    
                     <div className="flex justify-end items-center text-end w-full">
                         <div className="flex flex-1 justify-center items-center mx-4">
                             <div className="w-full max-w-[800px] flex items-center relative">
-                                <input
-                                    type="text"
-                                    placeholder="What are you looking for?"
-                                    className="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black pr-20"
-                                />
+                                <form onSubmit={handleSearch} className="w-full">
+                                    <input
+                                        type="text"
+                                        ref={searchInputRef}
+                                        value={searchTerm}
+                                        onChange={e => setSearchTerm(e.target.value)}
+                                        placeholder="What are you looking for?"
+                                        className="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black pr-20"
+                                        onFocus={() => searchResults.length > 0 && setShowResults(true)}
+                                    />
+                                </form>
                                 <div className="flex items-center space-x-3 absolute right-2 top-1/2 -translate-y-1/2 bg-white px-2">
-                                    <HiMiniMagnifyingGlass className="text-xl text-black cursor-pointer" />
+                                    <HiMiniMagnifyingGlass className="text-xl text-black cursor-pointer" onClick={handleSearch} />
                                     <span className="text-gray-300 text-lg select-none">|</span>
                                     <PiBarcodeThin className="text-xl text-black cursor-pointer" />
                                 </div>
+                                {/* Search Results Dropdown */}
+                                {showResults && searchResults.length > 0 && (
+                                    <div ref={searchResultsRef} className="absolute left-0 top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+                                        {searchResults.map((product, idx) => (
+                                            <React.Fragment key={product.id}>
+                                                <div
+                                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                                    onClick={() => {
+                                                        setShowResults(false);
+                                                        setSearchTerm(product.name);
+                                                        window.scrollTo({
+                                                            top: window.innerHeight / 2,
+                                                            behavior: 'smooth'
+                                                        });
+                                                    }}
+                                                >
+                                                    <div className="text-start text-md font-semibold">{product.name}</div>
+                                                    <div className="text-start text-sm text-gray-500">SKU: {product.sku} | {product.category}</div>
+                                                </div>
+                                                {idx < searchResults.length - 1 && (
+                                                    <div className="border-t border-gray-200 mx-2" />
+                                                )}
+                                            </React.Fragment>
+                                        ))}
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <AuthButton />
@@ -142,7 +214,6 @@ export default function Header() {
                         <div className="flex items-center ml-4">
                             <img src="/logo.png" alt="Logo" className="h-15 w-auto" />
                         </div>
-                        
                         <div className="flex items-center space-x-4">
                             <AuthButton />
                             <div className="flex items-center">
@@ -153,16 +224,40 @@ export default function Header() {
                     </div>
                     <div className="px-6 pb-2">
                         <div className="w-full flex items-center relative">
-                            <input
-                                type="text"
-                                placeholder="What are you looking for?"
-                                className="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black pr-20"
-                            />
+                            <form onSubmit={handleSearch} className="w-full">
+                                <input
+                                    type="text"
+                                    ref={searchInputRef}
+                                    value={searchTerm}
+                                    onChange={e => setSearchTerm(e.target.value)}
+                                    placeholder="What are you looking for?"
+                                    className="w-full px-3 py-1.5 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-black pr-20"
+                                    onFocus={() => searchResults.length > 0 && setShowResults(true)}
+                                />
+                            </form>
                             <div className="flex items-center space-x-3 absolute right-2 top-1/2 -translate-y-1/2 bg-white px-2">
-                                <HiMiniMagnifyingGlass className="text-xl text-black cursor-pointer" />
+                                <HiMiniMagnifyingGlass className="text-xl text-black cursor-pointer" onClick={handleSearch} />
                                 <span className="text-gray-300 text-lg select-none">|</span>
                                 <PiBarcodeThin className="text-xl text-black cursor-pointer" />
                             </div>
+                            {/* Search Results Dropdown */}
+                            {showResults && searchResults.length > 0 && (
+                                <div ref={searchResultsRef} className="absolute left-0 top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
+                                    {searchResults.map(product => (
+                                        <div
+                                            key={product.id}
+                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                            onClick={() => {
+                                                setShowResults(false);
+                                                setSearchTerm(product.name);
+                                            }}
+                                        >
+                                            <div className="font-semibold">{product.name}</div>
+                                            <div className="text-xs text-gray-500">SKU: {product.sku} | {product.category}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
