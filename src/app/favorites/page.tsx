@@ -1,43 +1,32 @@
-'use client';
+import React from 'react';
+import { requireAuth } from '@/lib/auth-server';
+import { FaLongArrowAltLeft } from "react-icons/fa";
 
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
 
-export default function FavoritesPage() {
-    const { isAuthenticated, isLoading: authLoading } = useAuth();
-    const router = useRouter();
-    const [isChecking, setIsChecking] = useState(true);
-
-    useEffect(() => {
-        if (!authLoading) {
-            if (!isAuthenticated) {
-                router.push('/signin');
-            } else {
-                setIsChecking(false);
-            }
-        }
-    }, [isAuthenticated, authLoading, router]);
-
-    if (authLoading || isChecking) {
-        return (
-            <div className="responsive-max-width min-h-screen flex items-center justify-center">
-                <div className="text-center">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-black mx-auto mb-4"></div>
-                    <p className="text-black">Loading...</p>
-                </div>
-            </div>
-        );
-    }
-
-    // If not authenticated, don't render the page content
-    if (!isAuthenticated) {
-        return null;
-    }
+export default async function FavoritesPage() {
+    await requireAuth();
 
     return (
         <div className="responsive-max-width min-h-screen bg-gray-50 py-8">
             <div className="max-w-6xl mx-auto px-4">
+                {/* Header */}
+                <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <h1 className="text-3xl font-bold text-black mb-2">My Favorites</h1>
+                            <p className="text-gray-600">Your saved favorite products</p>
+                        </div>
+                        <form action="/myaccount" method="get" className="mt-4 md:mt-0">
+                            <button
+                                type="submit"
+                                className="mt-4 md:mt-0 text-md flex items-center gap-2 bg-red-600 text-white px-4 py-2 rounded-md hover:cursor-pointer hover:bg-red-700 transition"
+                            >
+                                <FaLongArrowAltLeft /> Back to My Account
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
                 <div id="favorites" className="bg-white rounded-lg shadow-sm p-6">
                     <div className="flex items-center justify-between mb-4">
                         <h2 className="text-xl font-semibold text-black">Favorites</h2>
