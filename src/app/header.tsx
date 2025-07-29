@@ -99,7 +99,7 @@ export default function Header() {
         if (e) e.preventDefault();
         if (!searchTerm.trim()) return;
         try {
-            const apiUrl = process.env.SEARCH_API_URL || '';
+            const apiUrl = process.env.NEXT_PUBLIC_SEARCH_API_URL || '';
             const res = await axios.get(`${apiUrl}/products/search`, {
                 params: { q: searchTerm }
             });
