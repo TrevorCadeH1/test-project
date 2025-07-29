@@ -99,7 +99,8 @@ export default function Header() {
         if (e) e.preventDefault();
         if (!searchTerm.trim()) return;
         try {
-            const res = await axios.get('https://nodetest-b90d.onrender.com/api/products/search', {
+            const apiUrl = process.env.SEARCH_API_URL || '';
+            const res = await axios.get(`${apiUrl}/products/search`, {
                 params: { q: searchTerm }
             });
             setSearchResults(res.data.results);
@@ -186,10 +187,6 @@ export default function Header() {
                                                     onClick={() => {
                                                         setShowResults(false);
                                                         setSearchTerm(product.name);
-                                                        window.scrollTo({
-                                                            top: window.innerHeight / 2,
-                                                            behavior: 'smooth'
-                                                        });
                                                     }}
                                                 >
                                                     <div className="text-start text-md font-semibold">{product.name}</div>
