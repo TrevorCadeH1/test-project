@@ -190,7 +190,7 @@ export default function Header() {
                                                     }}
                                                 >
                                                     <div className="text-start text-md font-semibold">{product.name}</div>
-                                                    <div className="text-start text-sm text-gray-500">SKU: {product.sku} | {product.category}</div>
+                                                    <div className="text-start text-sm text-gray-500">Mnf Number: {product.sku} | {product.category}</div>
                                                 </div>
                                                 {idx < searchResults.length - 1 && (
                                                     <div className="border-t border-gray-200 mx-2" />
