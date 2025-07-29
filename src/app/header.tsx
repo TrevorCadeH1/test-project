@@ -189,8 +189,19 @@ export default function Header() {
                                                         setSearchTerm(product.name);
                                                     }}
                                                 >
-                                                    <div className="text-start text-md font-semibold">{product.name}</div>
-                                                    <div className="text-start text-sm text-gray-500">Mnf Number: {product.sku} | {product.category}</div>
+                                                    <div className="flex items-center">
+                                                        {product.image && (
+                                                            <img
+                                                                src={product.image}
+                                                                alt={product.name}
+                                                                className="w-12 h-12 object-contain mr-3 rounded"
+                                                            />
+                                                        )}
+                                                        <div>
+                                                            <div className="text-start text-md font-semibold">{product.name}</div>
+                                                            <div className="text-start text-sm text-gray-500">Mnf Number: {product.sku} | {product.category}</div>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                                 {idx < searchResults.length - 1 && (
                                                     <div className="border-t border-gray-200 mx-2" />
