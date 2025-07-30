@@ -180,34 +180,35 @@ export default function Header() {
                                 {/* Search Results Dropdown */}
                                 {showResults && searchResults.length > 0 && (
                                     <div ref={searchResultsRef} className="absolute left-0 top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
-                                        {searchResults.map((product, idx) => (
-                                            <React.Fragment key={product.id}>
-                                                <div
-                                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                                    onClick={() => {
-                                                        setShowResults(false);
-                                                        setSearchTerm(product.name);
-                                                    }}
-                                                >
-                                                    <div className="flex items-center">
-                                                        {product.image && (
-                                                            <img
-                                                                src={product.image}
-                                                                alt={product.name}
-                                                                className="w-12 h-12 object-contain mr-3 rounded"
-                                                            />
-                                                        )}
-                                                        <div>
-                                                            <div className="text-start text-md font-semibold">{product.name}</div>
-                                                            <div className="text-start text-sm text-gray-500">Mnf Number: {product.sku} | {product.category}</div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                {idx < searchResults.length - 1 && (
-                                                    <div className="border-t border-gray-200 mx-2" />
+                                {searchResults.map((product, idx) => (
+                                    <React.Fragment key={product.id}>
+                                        <div
+                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                            onMouseDown={() => {
+                                                setShowResults(false);
+                                                setSearchTerm(product.name);
+                                                router.push(`/products?sku=${encodeURIComponent(product.sku)}`);
+                                            }}
+                                        >
+                                            <div className="flex items-center">
+                                                {product.image && (
+                                                    <img
+                                                        src={product.image}
+                                                        alt={product.name}
+                                                        className="w-12 h-12 object-contain mr-3 rounded"
+                                                    />
                                                 )}
-                                            </React.Fragment>
-                                        ))}
+                                                <div>
+                                                    <div className="text-start text-md font-semibold">{product.name}</div>
+                                                    <div className="text-start text-sm text-gray-500">Mnf Number: {product.sku} | {product.category}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {idx < searchResults.length - 1 && (
+                                            <div className="border-t border-gray-200 mx-2" />
+                                        )}
+                                    </React.Fragment>
+                                ))}
                                     </div>
                                 )}
                             </div>
@@ -251,19 +252,31 @@ export default function Header() {
                             {/* Search Results Dropdown */}
                             {showResults && searchResults.length > 0 && (
                                 <div ref={searchResultsRef} className="absolute left-0 top-full mt-2 w-full bg-white border border-gray-200 rounded-md shadow-lg z-50 max-h-80 overflow-y-auto">
-                                    {searchResults.map(product => (
-                                        <div
-                                            key={product.id}
-                                            className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                            onClick={() => {
-                                                setShowResults(false);
-                                                setSearchTerm(product.name);
-                                            }}
-                                        >
+                            {searchResults.map(product => (
+                                <div
+                                    key={product.id}
+                                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                    onClick={() => {
+                                        setShowResults(false);
+                                        setSearchTerm(product.name);
+                                        router.push(`/products?sku=${encodeURIComponent(product.sku)}`);
+                                    }}
+                                >
+                                    <div className="flex items-center">
+                                        {product.image && (
+                                            <img
+                                                src={product.image}
+                                                alt={product.name}
+                                                className="w-12 h-12 object-contain mr-3 rounded"
+                                            />
+                                        )}
+                                        <div>
                                             <div className="font-semibold">{product.name}</div>
                                             <div className="text-xs text-gray-500">SKU: {product.sku} | {product.category}</div>
                                         </div>
-                                    ))}
+                                    </div>
+                                </div>
+                            ))}
                                 </div>
                             )}
                         </div>
