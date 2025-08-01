@@ -5,7 +5,7 @@ import { CiSearch } from "react-icons/ci";
 import { MdOutlineGridOn } from "react-icons/md";
 import { MdFormatListBulleted } from "react-icons/md";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 
 const products = [
@@ -112,19 +112,21 @@ const products = [
 
 type ViewMode = 'grid' | 'list';
 
-export default function ProductsPage() {
+// Component that uses useSearchParams - needs to be wrapped in Suspense
+function ProductsContent() {
   const searchParams = useSearchParams();
   const initialSku = searchParams.get('sku') || '';
   const [searchTerm, setSearchTerm] = useState(initialSku);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [viewMode, setViewMode] = useState<ViewMode>('grid');
   const [sortBy, setSortBy] = useState('name');
+  
   useEffect(() => {
     const sku = searchParams.get('sku');
     if (sku && sku !== searchTerm) {
       setSearchTerm(sku);
     }
-  }, [searchParams]);
+  }, [searchParams, searchTerm]);
 
   const categories = ['All', ...Array.from(new Set(products.map(p => p.category)))];
 
@@ -365,5 +367,14 @@ export default function ProductsPage() {
         )}
       </div>
     </div>
+  );
+}
+
+// Main component with Suspense wrapper
+export default function ProductsPage() {
+  return (
+    <Suspense>
+      <ProductsContent />
+    </Suspense>
   );
 }
