@@ -210,11 +210,11 @@ export default async function StatsPage() {
                                 <div className="grid grid-cols-2 gap-4 text-sm">
                                     <div>
                                         <span className="text-black">Account created on</span>
-                                        <p className="font-medium text-gray-900">01/01/2024</p>
+                                        <p className="font-medium text-gray-900">{customerData?.activation_date || '-'}</p>
                                     </div>
                                     <div>
                                         <span className="text-black">Account reset on</span>
-                                        <p className="font-medium text-gray-900">01/01/2024</p>
+                                        <p className="font-medium text-gray-900">{customerData?.reactivation_date || '-'}</p>
                                     </div>
                                 </div>
                             </div>
