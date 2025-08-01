@@ -226,36 +226,52 @@ export default async function StatsPage() {
                         <div className="bg-white rounded-lg p-6 border border-gray-300">
                     
                             <div className="flex items-center justify-between mb-6 mt-5">
-                                <div className="flex flex-col items-center flex-1">
-                                    <div
-                                        className="w-18 h-18 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2 mt-1"
-                                        style={{ backgroundColor: customerData.current_quintile_color}}
-                                    >
-                                        {customerData.current_quintile}
+                                {customerData.current_quintile && (
+                                    <div className="flex flex-col items-center flex-1">
+                                        <div
+                                            className="w-18 h-18 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2 mt-1"
+                                            style={{ backgroundColor: customerData.current_quintile_color}}
+                                        >
+                                            {customerData.current_quintile}
+                                        </div>
+                                        <p className="text-xs text-gray-500 text-center mt-2 whitespace-nowrap">
+                                            Customer Class
+                                        </p>
+                                        <p className="text-xs text-gray-500 text-center whitespace-nowrap">
+                                            (Current Quintile)
+                                        </p>
+                                        <p className="font-bold text-lg">{customerData.current_quintile}</p>
                                     </div>
-                                    <p className="text-xs text-gray-500 text-center mt-2 whitespace-nowrap">
-                                        Customer Class
-                                    </p>
-                                    <p className="text-xs text-gray-500 text-center whitespace-nowrap">
-                                        (Current Quintile)
-                                    </p>
-                                    <p className="font-bold text-lg">{customerData.current_quintile}</p>
-                                </div>
-                                <div className="flex flex-col items-center flex-[2] mx-2 -mt-20">
-                                    <p className="text-base font-semibold text-black mt-1">+${customerData.amount_to_jump}</p>
-                                    <svg className="w-32 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 128 40">
-                                        <path d="M8 20 H112" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
-                                        <polygon points="120,20 112,16 112,24" fill="currentColor" />
-                                    </svg>
-                                </div>
+                                )}
+                                
+                                {customerData.current_quintile && customerData.next_quintile && customerData.amount_to_jump && (
+                                    <div className="flex flex-col items-center flex-[2] mx-2 -mt-20">
+                                        <p className="text-base font-semibold text-black mt-1">+${customerData.amount_to_jump}</p>
+                                        <svg className="w-32 h-10 text-black" fill="none" stroke="currentColor" viewBox="0 0 128 40">
+                                            <path d="M8 20 H112" stroke="currentColor" strokeWidth="4" strokeLinecap="round"/>
+                                            <polygon points="120,20 112,16 112,24" fill="currentColor" />
+                                        </svg>
+                                    </div>
+                                )}
+                                
                                 <div className="flex flex-col items-center flex-1">
                                     <div
                                         className="w-18 h-18 rounded-full flex items-center justify-center text-white font-bold text-xl mb-2"
-                                        style={{ backgroundColor: customerData.next_quintile_color}}
+                                        style={{ backgroundColor: customerData.next_quintile_color || customerData.quintiles?.Z?.color}}
                                     >
-                                        {customerData.next_quintile}
+                                        {customerData.next_quintile || 'Z'}
                                     </div>
-                                    <p className="text-sm text-gray-500 mt-1 whitespace-nowrap">Amount Needed to <br /> Jump to Next Class</p>
+                                    <p className="text-sm text-gray-500 mt-1 whitespace-nowrap">
+                                        {customerData.current_quintile ? (
+                                            <>
+                                                Amount Needed to<br />Jump to Next Class
+                                            </>
+                                        ) : (
+                                            <>
+                                                Amount Needed to<br />Reach First Class
+                                            </>
+                                        )}
+                                    </p>
                                     <p className="font-semibold">${customerData.amount_to_jump}</p>
                                 </div>
                             </div>

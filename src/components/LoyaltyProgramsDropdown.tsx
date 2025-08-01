@@ -67,25 +67,31 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
             const maxTier = Math.max(...tiers);
             let barPercent = 0;
             const target = Number(program.next_tier?.target || 0);
-            const totalRemaining = Number(program.next_tier?.total_remaining || 0);
+            const currentTotal = Number(program.total || 0);
             
-            if (idx === 1) {
-              const thirdTierPercent = Number(program.tiers[2]?.percent || 0);
-              if (thirdTierPercent > 0) {
-                barPercent = Math.max(0, Math.min((Number(program.total) / thirdTierPercent) * 100, 100));
+            if (program.type === 'SINGLE_TIER') {
+              if (target > 0) {
+                if (currentTotal >= target) {
+                  barPercent = 94;
+                } else {
+                  barPercent = Math.max(0, Math.min((currentTotal / target) * 100, 100));
+                }
               }
             } else {
-              if (target > 0 && totalRemaining >= 0 && totalRemaining <= target) {
-                barPercent = Math.max(0, Math.min(((target - totalRemaining) / target) * 100, 100));
-              } else if (target > 0 && totalRemaining < 0) {
-                barPercent = 100;
+              if (idx === 1) {
+                const thirdTierPercent = Number(program.tiers[2]?.percent || 0);
+                if (thirdTierPercent > 0) {
+                  barPercent = Math.max(0, Math.min((currentTotal / thirdTierPercent) * 100, 100));
+                }
               } else {
-                barPercent = 0;
+                if (target > 0) {
+                  barPercent = Math.max(0, Math.min((currentTotal / target) * 100, 100));
+                }
               }
             }
             
             const nextTierTarget = Number(program.next_tier?.target || 0);
-            const starPercent = maxTier > 0 ? Math.min((nextTierTarget / target) * 100, 100) : 0;
+            let starPercent = target > 0 ? Math.min((nextTierTarget / target) * 100, 100) : 0;
             
             const barBg = idx === 1 
               ? ''
@@ -115,7 +121,9 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                       
                       <div className="absolute top-0 flex flex-col items-center" style={{ left: `${barPercent}%`, transform: 'translateX(-50%)' }}>
                         <div className="w-1.5 h-8 bg-black rounded-full" />
-                        <div className="text-xs text-black mt-1 whitespace-nowrap font-semibold">{formatCurrency(program.total)}</div>
+                        <div className="text-xs text-black mt-1 whitespace-nowrap font-semibold">
+                          {formatCurrency(program.total)}
+                        </div>
                       </div>
                       
                       {idx === 1 && (
@@ -143,22 +151,30 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                         </>
                       )}
                       
-                      {idx === 0 && (
+                      {program.type === 'SINGLE_TIER' && (
                         <>
                           <div className="absolute left-0 top-14 text-xs text-gray-500">Total Qualified Purchases</div>
-                          {starPercent > 0 && starPercent <= 100 && (
-                            <div
-                              className="absolute"
-                              style={{
-                                left: `${starPercent}%`,
-                                top: '2px',
-                                transform: 'translateX(-120%)',
-                                zIndex: 2,
-                              }}
-                            >
-                              <span role="img" aria-label="star" className="text-4xl"><IoStarSharp className="text-yellow-300" /></span>
-                            </div>
-                          )}
+                          {(() => {
+                            let starPosition = starPercent;
+                            
+                            if (currentTotal >= target) {
+                              starPosition = 94;
+                            }
+                            
+                            return starPosition > 0 && starPosition <= 100 && (
+                              <div
+                                className="absolute"
+                                style={{
+                                  left: `${starPosition}%`,
+                                  top: '2px',
+                                  transform: 'translateX(-120%)',
+                                  zIndex: 2,
+                                }}
+                              >
+                                <span role="img" aria-label="star" className="text-4xl"><IoStarSharp className="text-yellow-300" /></span>
+                              </div>
+                            );
+                          })()}
                           <div className="absolute left-0 -top-6 text-xs font-semibold text-black">{formatCurrency(0)}</div>
                           <div className="absolute right-0 -top-6 text-xs font-semibold text-black">{formatCurrency(target)}</div>
                         </>
