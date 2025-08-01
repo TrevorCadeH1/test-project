@@ -108,6 +108,7 @@ export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = 
                   <div className="mt-5 text-xs font-medium text-gray-600 tracking-tight">Total Qualified Purchases</div>
                 </div>
                 <div className="flex flex-col md:flex-row gap-4 flex-shrink-0 mt-8 md:mt-0">
+                  {/* Reward Cards */}
                     <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[160px]">
                         <div className="text-xs text-gray-500 mb-1 tracking-tight">Program Rewards Rate</div>
                         <div className="text-lg font-semibold text-black tracking-tight">{Number(program.next_tier?.payout || 0).toFixed(0)}%</div>

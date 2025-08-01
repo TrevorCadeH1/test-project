@@ -112,7 +112,6 @@ const products = [
 
 type ViewMode = 'grid' | 'list';
 
-// Component that uses useSearchParams - needs to be wrapped in Suspense
 function ProductsContent() {
   const searchParams = useSearchParams();
   const initialSku = searchParams.get('sku') || '';
@@ -370,7 +369,6 @@ function ProductsContent() {
   );
 }
 
-// Main component with Suspense wrapper
 export default function ProductsPage() {
   return (
     <Suspense>

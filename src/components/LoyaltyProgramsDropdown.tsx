@@ -69,15 +69,12 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
             const target = Number(program.next_tier?.target || 0);
             const totalRemaining = Number(program.next_tier?.total_remaining || 0);
             
-            // Different calculation for the second bar (idx === 1)
             if (idx === 1) {
-              // Use the third tier (highest tier) for calculation
               const thirdTierPercent = Number(program.tiers[2]?.percent || 0);
               if (thirdTierPercent > 0) {
                 barPercent = Math.max(0, Math.min((Number(program.total) / thirdTierPercent) * 100, 100));
               }
             } else {
-              // Original calculation for first bar
               if (target > 0 && totalRemaining >= 0 && totalRemaining <= target) {
                 barPercent = Math.max(0, Math.min(((target - totalRemaining) / target) * 100, 100));
               } else if (target > 0 && totalRemaining < 0) {
@@ -104,6 +101,7 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                 </div>
                 <div className="flex flex-col md:flex-row md:items-center gap-6">
                   <div className="flex-1 min-w-0 mt-2">
+                    {/* Progress Bar Section */}
                     <div className="relative h-8 flex items-center">
                       {idx === 1 ? (
                         <>
@@ -169,6 +167,7 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                     </div>
                   </div>
                   <div className="flex flex-col md:flex-row gap-4 flex-shrink-0 mt-8 md:mt-0">
+                    {/* Reward Cards */}
                     {program.type === 'SINGLE_TIER' ? (
                       <>
                         <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[140px]">

@@ -12,8 +12,18 @@ interface ShipToInfoDropdownV2Props {
 
 export default function ShipToInfoDropdownV2({ shippingAddress, shippingAddress2, fax, defaultExpanded = false }: ShipToInfoDropdownV2Props) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
+  const [selectedAddress, setSelectedAddress] = useState<'address1' | 'address2'>('address2');
   if (!shippingAddress) return null;
   const defaults = shippingAddress.defaults || {};
+
+  const formatAddress = (address: any) => {
+    if (!address) return '';
+    return `${address['street-address']}, ${address['locality']}, ${address['county']}, ${address['region']}, ${address['postal-code']}${address['zip4'] ? '-' + address['zip4'] : ''}, ${address['country-name']}`;
+  };
+
+  const getCurrentMapAddress = () => {
+    return selectedAddress === 'address1' ? formatAddress(shippingAddress) : formatAddress(shippingAddress2);
+  };
 
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden mt-6">
@@ -30,22 +40,32 @@ export default function ShipToInfoDropdownV2({ shippingAddress, shippingAddress2
       {isExpanded && (
         <div className="p-6">
           <div className="mb-4">
-            <div className="w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 mb-3">
+            <button 
+                className={`w-full border rounded-md px-4 py-2 mb-3 text-left transition-colors duration-200 hover:bg-gray-200 ${
+                    selectedAddress === 'address1' ? 'bg-gray-100 hover:cursor-pointer border-gray-300' : 'bg-gray-100 hover:cursor-pointer border-gray-300'
+                }`}
+                onClick={() => setSelectedAddress('address1')}
+            >
                 <span className="font-semibold text-base text-black">
                     Ship to ID # {shippingAddress['xc-addressid'] || 'N/A'}
                 </span>
                 <div className="text-sm text-black mb-2">
-                    {shippingAddress['street-address']}, {shippingAddress['locality']}, {shippingAddress['county']}, {shippingAddress['region']}, {shippingAddress['postal-code']}{shippingAddress['zip4'] ? '-' + shippingAddress['zip4'] : ''}, {shippingAddress['country-name']}
+                    {formatAddress(shippingAddress)}
                 </div>
-            </div>
-            <div className="w-full bg-gray-100 border border-gray-300 rounded-md px-4 py-2 mb-3">
+            </button>
+            <button 
+                className={`w-full border rounded-md px-4 py-2 mb-3 text-left transition-colors duration-200 hover:bg-gray-200 ${
+                    selectedAddress === 'address2' ? 'bg-gray-100 hover:cursor-pointer border-gray-300' : 'bg-gray-100 hover:cursor-pointer border-gray-300'
+                }`}
+                onClick={() => setSelectedAddress('address2')}
+            >
                 <span className="font-semibold text-base text-black">
                     Ship to ID # {shippingAddress2['xc-addressid'] || 'N/A'}
                 </span>
                 <div className="text-sm text-black mb-2">
-                    {shippingAddress2['street-address']}, {shippingAddress2['locality']}, {shippingAddress2['county']}, {shippingAddress2['region']}, {shippingAddress2['postal-code']}{shippingAddress2['zip4'] ? '-' + shippingAddress2['zip4'] : ''}, {shippingAddress2['country-name']}
+                    {formatAddress(shippingAddress2)}
                 </div>
-            </div>
+            </button>
                 <div className="mt-2 rounded-lg overflow-hidden border border-gray-200">
                 <iframe
                     title="Shipping Address Map"
@@ -55,9 +75,7 @@ export default function ShipToInfoDropdownV2({ shippingAddress, shippingAddress2
                     loading="lazy"
                     allowFullScreen
                     referrerPolicy="no-referrer-when-downgrade"
-                    src={`https://www.google.com/maps?q=${encodeURIComponent(
-                    `${shippingAddress2['street-address']}, ${shippingAddress2['locality']}, ${shippingAddress2['county']}, ${shippingAddress2['region']}, ${shippingAddress2['postal-code']}${shippingAddress2['zip4'] ? '-' + shippingAddress2['zip4'] : ''}, ${shippingAddress2['country-name']}`
-                    )}&output=embed`}
+                    src={`https://www.google.com/maps?q=${encodeURIComponent(getCurrentMapAddress())}&output=embed`}
                 ></iframe>
                 </div>
             </div>
