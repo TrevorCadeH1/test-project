@@ -144,7 +144,6 @@ async function fetchLoginCheck(): Promise<any> {
 export default async function StatsPage() {
     await requireAuth();
 
-
     const loginCheckData = await fetchLoginCheck();
     const userId = '272839';
 
@@ -179,8 +178,16 @@ export default async function StatsPage() {
                                     <h2 className="text-lg font-semibold text-gray-900 mb-1">Customer Account</h2>
                                     <p className="text-sm text-gray-600">Sold to ID <span className="font-medium">{loginCheckData.user.billto}</span></p>
                                 </div>
-                                <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-green-700 text-white">
-                                    {customerData?.status ? customerData.status.charAt(0).toUpperCase() + customerData.status.slice(1) : 'Active'}
+                                <span
+                                    className={`inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${
+                                        customerData?.status?.toLowerCase() === 'inactive'
+                                            ? 'bg-red-700'
+                                            : 'bg-green-700'
+                                    } text-white`}
+                                >
+                                    {customerData?.status
+                                        ? customerData.status.charAt(0).toUpperCase() + customerData.status.slice(1)
+                                        : 'Active'}
                                 </span>
                             </div>
                             <div className="space-y-3">
