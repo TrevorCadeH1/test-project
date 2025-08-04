@@ -30,14 +30,8 @@ export default function SalesSummaryDropdown({ data, defaultExpanded = false }: 
     let maxSales = Math.max(prevSales, curSales, 1000);
     if (maxSales < 10000) {
         maxSales = 10000;
-    } else if (maxSales < 20000) {
-        maxSales = 20000;
-    } else if (maxSales < 30000) {
-        maxSales = 30000;
-    } else if (maxSales < 40000) {
-        maxSales = 40000;
-    } else if (maxSales < 50000) {
-        maxSales = 50000;
+    } else {
+      maxSales = 50000;
     }
     const maxGP = 100;
 
@@ -70,8 +64,12 @@ export default function SalesSummaryDropdown({ data, defaultExpanded = false }: 
                     <span className="w-32 text-gray-600 text-sm">Current Year</span>
                     <div className="flex-1 h-5 bg-orange-200 rounded relative ml-2">
                     <div className="hidden sm:block">
-                      {[10000, 20000, 30000, 40000, 50000].map((milestone, idx) => {
-                        const left = `${20 * (idx + 1)}%`;
+                      {(() => {
+                        const milestones = maxSales === 10000 
+                          ? [0, 2000, 4000, 6000, 8000, 10000]
+                          : [0, 10000, 20000, 30000, 40000, 50000];
+                        return milestones.map((milestone, idx) => {
+                        const left = `${20 * (idx)}%`;
                         return (
                           <div
                             key={milestone}
@@ -91,7 +89,8 @@ export default function SalesSummaryDropdown({ data, defaultExpanded = false }: 
                             </span>
                           </div>
                         );
-                      })}
+                      });
+                      })()}
                     </div>
                     <div
                       className="h-5 bg-orange-400 rounded"
@@ -139,7 +138,7 @@ export default function SalesSummaryDropdown({ data, defaultExpanded = false }: 
                     <span className="w-32 text-gray-600 text-sm">Current Year</span>
                     <div className="flex-1 h-5 bg-orange-200 rounded relative ml-2">
                     <div className="hidden sm:block">
-                      {[20, 40, 60, 80, 100].map((milestone) => (
+                      {[0, 20, 40, 60, 80, 100].map((milestone) => (
                       <div
                         key={milestone}
                         className="absolute -bottom-1 h-15 border-l border-gray-400"

@@ -42,11 +42,6 @@ interface LoyaltyProgramsDropdownProps {
   defaultExpanded?: boolean;
 }
 
-function formatCurrency(val?: string | number) {
-  if (val === undefined || val === null || isNaN(Number(val))) return "-";
-  return "$" + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
 export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = false }: LoyaltyProgramsDropdownProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
@@ -122,7 +117,7 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                       <div className="absolute top-0 flex flex-col items-center" style={{ left: `${barPercent}%`, transform: 'translateX(-50%)' }}>
                         <div className="w-1.5 h-8 bg-black rounded-full" />
                         <div className="text-xs text-black mt-1 whitespace-nowrap font-semibold">
-                          {formatCurrency(program.total)}
+                          {'$' + program.total}
                         </div>
                       </div>
                       
@@ -132,21 +127,21 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                             <div className="text-xs font-semibold text-black text-center">{(program.tiers[0]?.value)}%</div>
                           </div>
                           <div className="absolute" style={{ left: '30%', top: '35px', transform: 'translateX(-50%)' }}>
-                            <div className="text-xs text-gray-600 text-center">{formatCurrency(program.tiers[0]?.percent || '0')}</div>
+                            <div className="text-xs text-gray-600 text-center">{'$' + program.tiers[0]?.percent || '0'}</div>
                           </div>
                           
                           <div className="absolute" style={{ left: '75%', top: '-20px', transform: 'translateX(-50%)' }}>
                             <div className="text-xs font-semibold text-black text-center">{(program.tiers[1]?.value)}%</div>
                           </div>
                           <div className="absolute" style={{ left: '75%', top: '35px', transform: 'translateX(-50%)' }}>
-                            <div className="text-xs text-gray-600 text-center">{formatCurrency(program.tiers[1]?.percent || '0')}</div>
+                            <div className="text-xs text-gray-600 text-center">{'$' + program.tiers[1]?.percent || '0'}</div>
                           </div>
                           
                           <div className="absolute" style={{ left: '95%', top: '-20px', transform: 'translateX(-50%)' }}>
                             <div className="text-xs font-semibold text-black text-center">{(program.tiers[2]?.value)}%</div>
                           </div>
                           <div className="absolute" style={{ left: '95%', top: '35px', transform: 'translateX(-50%)' }}>
-                            <div className="text-xs text-gray-600 text-center">{formatCurrency(program.tiers[2]?.percent || '0')}</div>
+                            <div className="text-xs text-gray-600 text-center">{'$' + program.tiers[2]?.percent || '0'}</div>
                           </div>
                         </>
                       )}
@@ -175,8 +170,8 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                               </div>
                             );
                           })()}
-                          <div className="absolute left-0 -top-6 text-xs font-semibold text-black">{formatCurrency(0)}</div>
-                          <div className="absolute right-0 -top-6 text-xs font-semibold text-black">{formatCurrency(target)}</div>
+                          <div className="absolute left-0 -top-6 text-xs font-semibold text-black">{'$' + (0)}</div>
+                          <div className="absolute right-0 -top-6 text-xs font-semibold text-black">{'$' + (target)}</div>
                         </>
                       )}
                       
@@ -193,13 +188,13 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                         </div>
                         <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[140px]">
                           <div className="text-xs text-gray-500 mb-1">Amount Remaining</div>
-                          <div className="text-lg font-bold text-green-600">{formatCurrency(program.next_tier?.total_remaining)}</div>
+                          <div className="text-lg font-bold text-green-600">{'$' + program.next_tier?.total_remaining}</div>
                           <div className="text-xs text-gray-400">To Start Earning Rewards</div>
                         </div>
                         <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[140px]">
                           <div className="text-xs text-gray-500 mb-1">Rewards Begin at</div>
-                          <div className="text-lg font-bold text-blue-700">{formatCurrency(program.next_tier?.rebate)}</div>
-                          <div className="text-xs text-gray-400">Once Reaching {formatCurrency(program.next_tier?.target)}</div>
+                          <div className="text-lg font-bold text-blue-700">{'$' + program.next_tier?.rebate}</div>
+                          <div className="text-xs text-gray-400">Once Reaching {'$' + program.next_tier?.target}</div>
                         </div>
                         <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[140px]">
                           <div className="text-xs text-gray-500 mb-1">Days Remaining</div>
@@ -226,12 +221,12 @@ export default function LoyaltyProgramsDropdown({ programs, defaultExpanded = fa
                         </div>
                         <div className="bg-white border rounded-lg px-6 py-3 flex flex-col items-center min-w-[170px]">
                           <div className="text-xs text-gray-500 mb-1">Reach Next Level</div>
-                          <div className="text-lg font-bold text-orange-600">{formatCurrency(program.next_tier?.total_remaining)}</div>
-                          <div className="text-xs text-gray-400">Next level at {formatCurrency(program.next_tier?.target)}</div>
+                          <div className="text-lg font-bold text-orange-600">{'$' + program.next_tier?.total_remaining}</div>
+                          <div className="text-xs text-gray-400">Next level at {'$' + program.next_tier?.target}</div>
                         </div>
                         <div className="bg-white border rounded-lg px-6 py-3 flex flex-col items-center min-w-[170px]">
                           <div className="text-xs text-gray-500 mb-1">Rewards Earned</div>
-                          <div className="text-lg font-bold text-black">{formatCurrency(program.total_earned)}</div>
+                          <div className="text-lg font-bold text-black">{'$' + program.total_earned}</div>
                           <div className="text-xs text-gray-400">— No difference this year</div>
                         </div>
                         <div className="bg-white border rounded-lg px-6 py-3 flex flex-col items-center min-w-[170px]">

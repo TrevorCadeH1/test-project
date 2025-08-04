@@ -22,12 +22,6 @@ export default function AccountingPaymentDropdown(props: AccountingPaymentDropdo
     } = props;
     const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
-    const formatCreditLimit = (limit: string | undefined) => {
-        if (!limit) return 'N/A';
-        const num = parseFloat(limit);
-        return `$${num.toFixed(2)}`;
-    };
-
     return (
         <div className="bg-white border border-gray-300 rounded-lg overflow-hidden">
             {/* Header Bar */}
@@ -56,7 +50,7 @@ export default function AccountingPaymentDropdown(props: AccountingPaymentDropdo
                         <div>
                             <h3 className="text-sm font-medium text-gray-600 mb-2">Credit Limit</h3>
                             <p className="text-black font-medium text-lg">
-                                {formatCreditLimit(creditLimit)}
+                                {creditLimit ? `$${parseFloat(creditLimit).toFixed(2)}` : '-'}
                             </p>
                         </div>
 

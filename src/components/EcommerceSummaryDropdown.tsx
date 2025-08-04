@@ -22,15 +22,6 @@ interface EcommerceSummaryDropdownProps {
 export default function EcommerceSummaryDropdown({ data, defaultExpanded = false }: EcommerceSummaryDropdownProps) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
-  const formatCurrency = (val?: string) => {
-    if (!val || isNaN(Number(val))) return "-";
-    return "$" + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-  };
-  const formatInt = (val?: string) => {
-    if (!val || isNaN(Number(val))) return "-";
-    return Number(val).toLocaleString();
-  };
-
   return (
     <div className="bg-white border border-gray-300 rounded-lg overflow-hidden mt-6">
       {/* Header Bar */}
@@ -58,23 +49,23 @@ export default function EcommerceSummaryDropdown({ data, defaultExpanded = false
             </div>
             <div>
               <div className="text-gray-600">No Web Sales Month Count</div>
-              <div className="font-bold text-black">{formatInt(data.no_web_sales_cnt)}</div>
+              <div className="font-bold text-black">{data.no_web_sales_cnt}</div>
             </div>
             <div>
               <div className="text-gray-600">Total Order Count (12mm)</div>
-              <div className="font-bold text-black">{formatInt(data.total_orders)}</div>
+              <div className="font-bold text-black">{data.total_orders}</div>
             </div>
             <div>
               <div className="text-gray-600">Total Web Order Count (12mm)</div>
-              <div className="font-bold text-black">{formatInt(data.total_web_orders)}</div>
+              <div className="font-bold text-black">{data.total_web_orders}</div>
             </div>
             <div>
               <div className="text-gray-600">Web Sales ($$$)</div>
-              <div className="font-bold text-black">{formatCurrency(data.web_sales)}</div>
+              <div className="font-bold text-black">{'$' + data.web_sales}</div>
             </div>
             <div>
               <div className="text-gray-600">Web Frequency (month) last 12 months</div>
-              <div className="font-bold text-black">{formatInt(data.web_frequency)}</div>
+              <div className="font-bold text-black">{data.web_frequency}</div>
             </div>
           </div>
         </div>

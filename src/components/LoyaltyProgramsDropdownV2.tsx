@@ -3,8 +3,6 @@
 
 import React, { useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
-import { MdOutlineStars } from "react-icons/md";
-
 
 interface Tier {
   percent: string;
@@ -43,11 +41,6 @@ interface LoyaltyProgramsDropdownV2Props {
   defaultExpanded?: boolean;
 }
 
-function formatCurrency(val?: string | number) {
-  if (val === undefined || val === null || isNaN(Number(val))) return "$0.00";
-  return "$" + Number(val).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-
 export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = false }: LoyaltyProgramsDropdownV2Props) {
   const [isExpanded, setIsExpanded] = useState(defaultExpanded);
 
@@ -68,10 +61,15 @@ export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = 
           const target = Number(program.next_tier?.target || 0);
           const totalRemaining = Number(program.next_tier?.total_remaining || 0);
           let barPercent = 0;
-          if (target > 0 && totalRemaining >= 0 && totalRemaining <= target) {
+          let markerPosition = "0%";
+          if (target > 0 && totalRemaining > 0 && totalRemaining <= target) {
             barPercent = Math.max(0, Math.min(((target - totalRemaining) / target) * 100, 100));
-          } else if (target > 0 && totalRemaining < 0) {
+            markerPosition = `${barPercent}%`;
+          } else if (target > 0 && totalRemaining <= 0) {
             barPercent = 100;
+            markerPosition = "calc(100% - 17px)";
+          } else {
+            markerPosition = `${barPercent}%`;
           }
           const barBg = "bg-gradient-to-r from-[#A8E063] to-[#166534]";
           return (
@@ -85,9 +83,9 @@ export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = 
                 <div className="flex-1 mt-2 min-w-0">
                   <div className="relative h-8 flex items-center">
                     <div className={`absolute left-0 top-1/2 w-full h-7 rounded-full ${barBg}`} style={{ transform: 'translateY(-50%)' }} />
-                    <div className="absolute top-0 flex flex-col items-center" style={{ left: `${barPercent}%`, transform: 'translateX(-50%)' }}>
+                    <div className="absolute top-0 flex flex-col items-center" style={{ left: markerPosition, transform: 'translateX(-50%)', zIndex: 3 }}>
                       <div className="w-1.5 h-8 bg-black rounded-full" />
-                      <div className="text-xs text-black mt-1 whitespace-nowrap font-semibold tracking-tight">{formatCurrency(program.total)}</div>
+                      <div className="text-xs text-black mt-1 whitespace-nowrap font-semibold tracking-tight">{'$' + (program.total)}</div>
                     </div>
                     <svg className="absolute" style={{ left: `calc(100% - 32px)`, top: '1px', zIndex: 2 }} width="30" height="30" viewBox="0 0 32 32" fill="none">
                         <circle cx="16" cy="16" r="14" stroke="#14532d" strokeWidth="1" fill="#fde047" />
@@ -100,10 +98,10 @@ export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = 
                         className="absolute -top-7 text-xs font-semibold text-black tracking-tight"
                         style={{ left: `${percent * 100}%`, transform: "translateX(-50%)" }}
                       >
-                        {formatCurrency(target * percent)}
+                        {'$' + (target * percent)}
                       </div>
                     ))}
-                    <div className="absolute -right-5 md:-right-2 -top-7 text-xs font-semibold text-black tracking-tight">{formatCurrency(target)}</div>
+                    <div className="absolute -right-5 md:-right-2 -top-7 text-xs font-semibold text-black tracking-tight">{'$' + (target)}</div>
                   </div>
                   <div className="mt-5 text-xs font-medium text-gray-600 tracking-tight">Total Qualified Purchases</div>
                 </div>
@@ -116,12 +114,12 @@ export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = 
                     </div>
                     <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[160px]">
                         <div className="text-xs text-gray-500 mb-1 tracking-tight">Amount Remaining</div>
-                        <div className="text-lg font-semibold text-black tracking-tight">{formatCurrency(program.next_tier?.total_remaining)}</div>
+                        <div className="text-lg font-semibold text-black tracking-tight">{'$' + (program.next_tier?.total_remaining)}</div>
                         <div className="text-xs text-gray-400 tracking-tight text-center">To start earning <br /> rewards</div>
                     </div>
                     <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[160px]">
                         <div className="text-xs text-gray-500 mb-1 tracking-tight">Rewards Earned</div>
-                        <div className="text-lg font-semibold text-black tracking-tight">{formatCurrency(program.total_earned)}</div>
+                        <div className="text-lg font-semibold text-black tracking-tight">{'$' + (program.total_earned)}</div>
                         <div className="text-xs text-gray-400 tracking-tight text-center">Rewards issued at <br /> program end</div>
                     </div>
                     <div className="bg-white border rounded-lg px-4.75 py-3 flex flex-col items-center min-w-[160px]">
@@ -135,7 +133,7 @@ export default function LoyaltyProgramsDropdownV2({ programs, defaultExpanded = 
 
               <div className="flex justify-end mt-2">
                 <span className="text-xs text-gray-600 tracking-tight text-right">
-                  Once reaching {formatCurrency(program.next_tier?.target)}, rewards are unlocked and continue to grow at {Number(program.next_tier?.payout || 0).toFixed(0)}% for the rest of the program
+                  Once reaching {'$' + (program.next_tier?.target)}, rewards are unlocked and continue to grow at {Number(program.next_tier?.payout || 0).toFixed(0)}% for the rest of the program
                 </span>
               </div>
                     
