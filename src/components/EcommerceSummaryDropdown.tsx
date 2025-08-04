@@ -57,7 +57,7 @@ export default function EcommerceSummaryDropdown({ data, defaultExpanded = false
             </div>
             <div>
               <div className="text-gray-600">Total Web Order Count (12mm)</div>
-              <div className="font-bold text-black">{data.total_web_orders}</div>
+                <div className="font-bold text-black">{data.total_web_orders ? data.total_web_orders : "-"}</div>
             </div>
             <div>
               <div className="text-gray-600">Web Sales ($$$)</div>
@@ -65,7 +65,7 @@ export default function EcommerceSummaryDropdown({ data, defaultExpanded = false
             </div>
             <div>
               <div className="text-gray-600">Web Frequency (month) last 12 months</div>
-              <div className="font-bold text-black">{data.web_frequency}</div>
+                <div className="font-bold text-black">{data.web_frequency ? data.web_frequency : "-"}</div>
             </div>
           </div>
         </div>
