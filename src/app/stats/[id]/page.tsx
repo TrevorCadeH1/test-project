@@ -435,7 +435,6 @@ export default async function StatsPage() {
                         return <LoyaltyProgramsDropdownV2 programs={loyaltySettings.programs} defaultExpanded={true} />;
                     })()
                 )}
-                
 
             </div>
         </div>
